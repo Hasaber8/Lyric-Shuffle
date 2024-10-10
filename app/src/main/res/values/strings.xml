@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">A6_Group10</string>
+    <string name="group_name">Group 10</string>
+
+    <!--  Strings for At Your Service  -->
+    <string name="at_your_service">At Your Service</string>
 </resources>
