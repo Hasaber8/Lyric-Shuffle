@@ -19,7 +19,6 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder> {
         this.itemList = itemList;
     }
 
-
     @Override
     public RviewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.result_item, parent, false);
@@ -29,7 +28,6 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder> {
     @Override
     public void onBindViewHolder(RviewHolder holder, int position) {
         ItemCard currentItem = itemList.get(position);
-        //Set holder values here with Item Card
 
     }
 
