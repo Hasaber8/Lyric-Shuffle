@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="8dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginVertical="4dp"
+    android:layout_marginHorizontal="8dp"
     android:background="#ece6ff"
     app:cardCornerRadius="8dp"
     app:cardElevation="2dp">
@@ -14,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ece6ff"
-        android:padding="16dp">
+        android:padding="12dp">
 
         <ImageButton
             android:id="@+id/resultIcon"

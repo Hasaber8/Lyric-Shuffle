@@ -4,7 +4,7 @@
 
     <!--  Strings for At Your Service  -->
     <string name="at_your_service">At Your Service</string>
-    <string name="search_title">Search Something!</string>
+    <string name="search_title">Search anything Anime!</string>
     <string name="search_hint">Anime, Category, etc.</string>
     <string name="search_button">Search</string>
     <string name="anime_type">Anime Type</string>
