@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 import edu.northeastern.a6_group10.R;
@@ -28,6 +29,11 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder> {
     @Override
     public void onBindViewHolder(RviewHolder holder, int position) {
         ItemCard currentItem = itemList.get(position);
+
+        holder.resultRating.setText(currentItem.getRating());
+        holder.resultType.setText(currentItem.getType());
+        holder.resultTitle.setText(currentItem.getTitle());
+//        holder.resultIcon.setImageURI(new URI(currentItem.getImageUrl());
 
     }
 
