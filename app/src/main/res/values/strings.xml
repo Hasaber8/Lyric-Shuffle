@@ -31,4 +31,7 @@
         <item>PG-13</item>
         <item>R-17</item>
     </string-array>
+
+    <!--  Strings for Anime Results  -->
+    <string name="results_icon">Results Icon</string>
 </resources>
