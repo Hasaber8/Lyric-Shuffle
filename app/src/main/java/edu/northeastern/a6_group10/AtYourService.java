@@ -21,4 +21,31 @@ public class AtYourService extends AppCompatActivity {
             return insets;
         });
     }
+
+    public void handleAnimeTextQuery(){
+
+    }
+
+    public void handleAnimeTypeQuery(){
+
+    }
+
+    public void handleLimitUpdate(){
+
+    }
+
+    public void handleRatingQuery(){
+
+    }
+
+    public void handleSFWToggle(){
+
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //Fill this out to save state for configuration update
+    }
 }
