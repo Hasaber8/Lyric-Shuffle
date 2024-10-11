@@ -13,6 +13,7 @@
 
     <!--  Strings for Anime Types  -->
     <string-array name="anime_types">
+        <item>All</item>
         <item>TV</item>
         <item>Movie</item>
         <item>OVA</item>
@@ -26,6 +27,7 @@
 
     <!--  Strings for Anime Ratings  -->
     <string-array name="anime_ratings">
+        <item>All</item>
         <item>G</item>
         <item>PG</item>
         <item>PG-13</item>
