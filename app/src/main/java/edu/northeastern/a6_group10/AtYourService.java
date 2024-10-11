@@ -34,6 +34,8 @@ import java.util.concurrent.Executors;
 import edu.northeastern.a6_group10.recycler.ItemCard;
 import edu.northeastern.a6_group10.recycler.RviewAdapter;
 
+import java.io.IOException;
+
 public class AtYourService extends AppCompatActivity {
 
     private RviewAdapter rviewAdapter;
@@ -46,6 +48,8 @@ public class AtYourService extends AppCompatActivity {
     private Spinner animeRating;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+    private final ExecutorService internetCheckExecutor = Executors.newSingleThreadExecutor();
+    private volatile boolean internetCheckRunning = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,15 @@ public class AtYourService extends AppCompatActivity {
         }
 
         init(savedInstanceState);
+        startInternetCheck();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Stop the background check when the activity is destroyed
+        internetCheckRunning = false;
+        internetCheckExecutor.shutdownNow();
     }
 
     private void init(Bundle savedInstanceState) {
@@ -241,5 +254,41 @@ public class AtYourService extends AppCompatActivity {
 
         recyclerView.setAdapter(rviewAdapter);
         recyclerView.setLayoutManager(rLayoutManger);
+    }
+
+    // Method to start background internet check
+    private void startInternetCheck() {
+        internetCheckExecutor.execute(() -> {
+            while (internetCheckRunning) {
+                boolean isConnected = isRoutedToInternet();
+                mainThreadHandler.post(() -> {
+                    if (isConnected) {
+                        textViewResults.setText("Connection Established");
+                    } else {
+                        textViewResults.setText("Connection Lost");
+                    }
+                });
+                try {
+                    Thread.sleep(5000); // Check every 5 seconds
+                } catch (InterruptedException e) {
+                    break;
+                }
+            }
+        });
+    }
+
+    // Method to check internet connection
+    public static boolean isRoutedToInternet() {
+        try {
+            HttpURLConnection con = (HttpURLConnection)
+                    new URL("https://www.google.com").openConnection();
+            con.setRequestProperty("User-Agent", "Android");
+            con.setRequestProperty("Connection", "close");
+            con.setConnectTimeout(1500);
+            con.connect();
+            return con.getResponseCode() == 204 && con.getContentLength() <= 0;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }
