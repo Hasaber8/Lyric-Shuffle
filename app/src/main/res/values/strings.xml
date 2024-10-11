@@ -9,7 +9,6 @@
     <string name="search_button">Search</string>
     <string name="anime_type">Anime Type</string>
     <string name="anime_rating">Anime Rating</string>
-    <string name="loading_results">Loading Results</string>
 
     <!--  Strings for Anime Types  -->
     <string-array name="anime_types">

@@ -42,6 +42,7 @@ public class AtYourService extends AppCompatActivity {
     private EditText searchBox;
     private TextView textViewResults;
     private Spinner animeType;
+    private TextView loadingResultsTextView;
     private Spinner animeRating;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
@@ -58,6 +59,8 @@ public class AtYourService extends AppCompatActivity {
         animeRating = findViewById(R.id.animeRatingDropdown);
         Button searchButton = findViewById(R.id.searchButton);
         textViewResults = findViewById(R.id.loadingResultsTextView);
+
+        textViewResults.setText("Connection Established");
 
         // Set the search button's click listener
         searchButton.setOnClickListener(v -> initiateRequest());
@@ -147,6 +150,7 @@ public class AtYourService extends AppCompatActivity {
                 mainThreadHandler.post(() -> {
                     if (result != null) {
                         parseAndDisplayAnime(result);
+                        textViewResults.setText("Connection Established");
                     } else {
                         textViewResults.setText("Error retrieving data.");
                     }
@@ -192,6 +196,8 @@ public class AtYourService extends AppCompatActivity {
         String searchQuery = handleAnimeTextQuery();
         String typeQuery = handleAnimeTypeQuery();
         String ratingQuery = handleRatingQuery();
+
+        textViewResults.setText("Loading Results");
 
         // Build the query URL
         String baseUrl = "https://api.jikan.moe/v4/anime?sfw=true&q=" + searchQuery;
