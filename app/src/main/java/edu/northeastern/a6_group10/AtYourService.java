@@ -201,10 +201,10 @@ public class AtYourService extends AppCompatActivity {
 
         // Build the query URL
         String baseUrl = "https://api.jikan.moe/v4/anime?q=" + searchQuery;
-        if (!typeQuery.isEmpty()) {
+        if (!typeQuery.equals("All")) {
             baseUrl += "&type=" + typeQuery;
         }
-        if (!ratingQuery.isEmpty()) {
+        if (!ratingQuery.equals("All")) {
             baseUrl += "&rating=" + ratingQuery;
         }
 
