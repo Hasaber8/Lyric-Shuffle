@@ -194,7 +194,7 @@ public class AtYourService extends AppCompatActivity {
         String ratingQuery = handleRatingQuery();
 
         // Build the query URL
-        String baseUrl = "https://api.jikan.moe/v4/anime?q=" + searchQuery;
+        String baseUrl = "https://api.jikan.moe/v4/anime?sfw=true&q=" + searchQuery;
         if (!typeQuery.equals("All")) {
             baseUrl += "&type=" + typeQuery;
         }
