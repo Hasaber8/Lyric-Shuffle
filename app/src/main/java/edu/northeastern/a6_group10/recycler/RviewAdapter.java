@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.net.URI;
 import java.util.ArrayList;
 
@@ -33,8 +35,10 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder> {
         holder.resultRating.setText(currentItem.getRating());
         holder.resultType.setText(currentItem.getType());
         holder.resultTitle.setText(currentItem.getTitle());
-//        holder.resultIcon.setImageURI(new URI(currentItem.getImageUrl());
 
+        Glide.with(holder.itemView.getContext())
+                .load(currentItem.getImageUrl())
+                .into(holder.resultIcon);
     }
 
     @Override
