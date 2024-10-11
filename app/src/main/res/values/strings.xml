@@ -13,7 +13,6 @@
 
     <!--  Strings for Anime Types  -->
     <string-array name="anime_types">
-        <item>All</item>
         <item>TV</item>
         <item>Movie</item>
         <item>OVA</item>
