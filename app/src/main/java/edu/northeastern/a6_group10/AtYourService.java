@@ -1,18 +1,16 @@
 package edu.northeastern.a6_group10;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -38,19 +36,15 @@ import edu.northeastern.a6_group10.recycler.RviewAdapter;
 
 public class AtYourService extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
     private RviewAdapter rviewAdapter;
-    private RecyclerView.LayoutManager rLayoutManger;
-    private ArrayList<ItemCard> itemList = new ArrayList<>();
+    private final ArrayList<ItemCard> itemList = new ArrayList<>();
 
     private EditText searchBox;
     private TextView textViewResults;
     private Spinner animeType;
     private Spinner animeRating;
-    private Button searchButton;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,22 +56,25 @@ public class AtYourService extends AppCompatActivity {
         searchBox = findViewById(R.id.searchBox);
         animeType = findViewById(R.id.animeTypeDropdown);
         animeRating = findViewById(R.id.animeRatingDropdown);
-        searchButton = findViewById(R.id.searchButton);
+        Button searchButton = findViewById(R.id.searchButton);
         textViewResults = findViewById(R.id.loadingResultsTextView);
 
         // Set the search button's click listener
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initiateRequest();
-            }
-        });
+        searchButton.setOnClickListener(v -> initiateRequest());
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        if (savedInstanceState != null) {
+            ArrayList<ItemCard> savedItemList = savedInstanceState.getParcelableArrayList("itemList");
+            if (savedItemList != null) {
+                itemList.addAll(savedItemList);
+            }
+        }
+
         init(savedInstanceState);
     }
 
@@ -123,7 +120,6 @@ public class AtYourService extends AppCompatActivity {
             }
 
             return buffer.toString();
-
         } catch (java.net.SocketTimeoutException e) {
             throw new Exception("Connection timed out. Please try again later.", e);
 
@@ -132,7 +128,6 @@ public class AtYourService extends AppCompatActivity {
 
         } catch (Exception e) {
             throw new Exception("An error occurred while retrieving data: " + e.getMessage(), e);
-
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -189,12 +184,11 @@ public class AtYourService extends AppCompatActivity {
         }
     }
 
-
     private void initialItemData(Bundle savedInstanceState) {
         //Write fetching of data into state variables here
     }
 
-    private void initiateRequest(){
+    private void initiateRequest() {
         String searchQuery = handleAnimeTextQuery();
         String typeQuery = handleAnimeTypeQuery();
         String ratingQuery = handleRatingQuery();
@@ -213,38 +207,33 @@ public class AtYourService extends AppCompatActivity {
         fetchAnimeData(baseUrl);
     }
 
-    public String handleAnimeTextQuery(){
+    public String handleAnimeTextQuery() {
         return searchBox.getText().toString().trim();
     }
 
-    public String handleAnimeTypeQuery(){
+    public String handleAnimeTypeQuery() {
         return animeType.getSelectedItem().toString();
     }
 
-    public String handleRatingQuery(){
+    public String handleRatingQuery() {
         return animeRating.getSelectedItem().toString();
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        //Fill this out to save state for configuration update
+        outState.putParcelableArrayList("itemList", itemList);
     }
 
     private void createRecyclerView() {
+        RecyclerView.LayoutManager rLayoutManger = new LinearLayoutManager(this);
 
-
-        rLayoutManger = new LinearLayoutManager(this);
-
-        recyclerView = findViewById(R.id.outputListRecyclerView);
+        RecyclerView recyclerView = findViewById(R.id.outputListRecyclerView);
         recyclerView.setHasFixedSize(true);
 
         rviewAdapter = new RviewAdapter(itemList);
 
-
         recyclerView.setAdapter(rviewAdapter);
         recyclerView.setLayoutManager(rLayoutManger);
-
-
     }
 }

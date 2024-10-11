@@ -4,11 +4,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import java.net.URI;
 import java.util.ArrayList;
 
 import edu.northeastern.a6_group10.R;
@@ -22,6 +22,7 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder> {
         this.itemList = itemList;
     }
 
+    @NonNull
     @Override
     public RviewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.result_item, parent, false);

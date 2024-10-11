@@ -14,7 +14,6 @@ public class RviewHolder extends RecyclerView.ViewHolder {
     public TextView resultRating;
     public ImageView resultIcon;
 
-
     public RviewHolder(View itemView) {
         super(itemView);
         resultTitle = itemView.findViewById(R.id.resultTitle);
