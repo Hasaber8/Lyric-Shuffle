@@ -7,8 +7,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import edu.northeastern.a6_group10.recycler.RviewAdapter;
 
 public class AtYourService extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private RviewAdapter rviewAdapter;
+    private RecyclerView.LayoutManager rLayoutManger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +44,6 @@ public class AtYourService extends AppCompatActivity {
     public void handleRatingQuery(){
 
     }
-
-    public void handleSFWToggle(){
-
-    }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
