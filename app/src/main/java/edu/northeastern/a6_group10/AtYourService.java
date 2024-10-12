@@ -286,7 +286,7 @@ public class AtYourService extends AppCompatActivity {
             con.setRequestProperty("Connection", "close");
             con.setConnectTimeout(1500);
             con.connect();
-            return con.getResponseCode() == 204 && con.getContentLength() <= 0;
+            return con.getResponseCode() == 200 || con.getResponseCode() == 204;
         } catch (IOException e) {
             return false;
         }
