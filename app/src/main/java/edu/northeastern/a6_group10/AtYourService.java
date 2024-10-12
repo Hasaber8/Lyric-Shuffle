@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -185,7 +186,7 @@ public class AtYourService extends AppCompatActivity {
             if (animeArray.length() == 0) {
                 // Show cat image when no results are found
                 String catImageUrl = "https://http.cat/images/404.jpg";
-                itemList.add(new ItemCard("No Results", "", catImageUrl, "Error"));
+                itemList.add(new ItemCard("No Results", "404", catImageUrl, "Oh well - we don't have info about that!"));
                 textViewResults.setText("No results found");
             } else {
                 for (int i = 0; i < animeArray.length(); i++) {
@@ -216,6 +217,11 @@ public class AtYourService extends AppCompatActivity {
         String searchQuery = handleAnimeTextQuery();
         String typeQuery = handleAnimeTypeQuery();
         String ratingQuery = handleRatingQuery();
+
+        if (searchQuery.length() == 0){
+            Toast.makeText(this, "Please search for something!", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         textViewResults.setText("Loading Results");
 
