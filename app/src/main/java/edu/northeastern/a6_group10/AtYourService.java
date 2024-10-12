@@ -182,15 +182,22 @@ public class AtYourService extends AppCompatActivity {
 
             itemList.clear();
 
-            for (int i = 0; i < animeArray.length(); i++) {
-                JSONObject animeObject = animeArray.getJSONObject(i);
-                String title = animeObject.getString("title");
-                String rating = animeObject.optString("rating", "Unknown");  // Handle possible missing fields
-                String type = animeObject.optString("type", "Unknown");
-                String imageUrl = animeObject.getJSONObject("images").getJSONObject("jpg").getString("image_url");
+            if (animeArray.length() == 0) {
+                // Show cat image when no results are found
+                String catImageUrl = "https://http.cat/images/404.jpg";
+                itemList.add(new ItemCard("No Results", "", catImageUrl, "Error"));
+                textViewResults.setText("No results found");
+            } else {
+                for (int i = 0; i < animeArray.length(); i++) {
+                    JSONObject animeObject = animeArray.getJSONObject(i);
+                    String title = animeObject.getString("title");
+                    String rating = animeObject.optString("rating", "Unknown");
+                    String type = animeObject.optString("type", "Unknown");
+                    String imageUrl = animeObject.getJSONObject("images").getJSONObject("jpg").getString("image_url");
 
-                // Add the new item to the list
-                itemList.add(new ItemCard(title, rating, imageUrl, type));
+                    itemList.add(new ItemCard(title, rating, imageUrl, type));
+                }
+                textViewResults.setText("Results Loaded");
             }
 
             // Notify the adapter that the data has changed
