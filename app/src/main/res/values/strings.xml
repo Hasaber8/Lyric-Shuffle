@@ -35,4 +35,6 @@
 
     <!--  Strings for Anime Results  -->
     <string name="results_icon">Results Icon</string>
+    <string name="about_button">About us</string>
+    <string name="rohan_hasabe">Rohan Hasabe</string>
 </resources>

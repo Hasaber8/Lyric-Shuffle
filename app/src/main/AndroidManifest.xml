@@ -17,6 +17,8 @@
         <activity
             android:name=".AtYourService"
             android:exported="false" />
+        <activity android:name=".AboutUsActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
