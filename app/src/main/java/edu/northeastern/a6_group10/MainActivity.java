@@ -32,5 +32,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button stickItToEm = findViewById(R.id.button_stick_it_to_em);
+
+        stickItToEm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, StickItToEmActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
