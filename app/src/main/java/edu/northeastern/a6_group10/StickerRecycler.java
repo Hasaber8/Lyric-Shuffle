@@ -44,8 +44,8 @@ public class StickerRecycler extends RecyclerView.Adapter<StickerRecycler.Sticke
         public StickerViewHolder(@NonNull View itemView) {
             super(itemView);
             //stickerLogo = itemView.findViewById(R.id.stickerLogo);
-            stickerName = itemView.findViewById(R.id.stickerName);
-            stickerCount = itemView.findViewById(R.id.stickerCount);
+            stickerName = itemView.findViewById(R.id.sentNumberText);
+            stickerCount = itemView.findViewById(R.id.sentNumberValue);
         }
     }
 }
