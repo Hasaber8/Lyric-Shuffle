@@ -11,19 +11,26 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class FeedActivity extends AppCompatActivity {
 
     public static final String STICKER_SERVICE_CHANNEL_ID = "stickItToEm";
+    private TextView usernameTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
+        //dummy notification
         createNotificationChannel();
         showNotification();
+        //dummy username
+        usernameTextView = findViewById(R.id.userNameTextView);
+        usernameTextView.setText("Username");
 
         RecyclerView stickerRecyclerView = findViewById(R.id.stickerRecyclerView);
         stickerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
