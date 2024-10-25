@@ -41,4 +41,7 @@
     <string name="pavan_rao">Pavan Rao</string>
     <string name="rachana_kj">Rachana Kallada Jayaraj</string>
     <string name="hari">Harikrishnan Unnikrishna Pillai</string>
+    <string name="select_user">Select User to send the sticker to:</string>
+    <string name="selected_sticker">Selected Sticker:</string>
+    <string name="users_icon">Users Icon</string>
 </resources>
