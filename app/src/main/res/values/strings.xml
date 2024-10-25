@@ -9,6 +9,8 @@
     <string name="search_button">Search</string>
     <string name="anime_type">Anime Type</string>
     <string name="anime_rating">Anime Rating</string>
+    <string name="stickerChannelName">Stick It To Em</string>
+    <string name="stickerChannelDescription">Yooo, sticker received</string>
 
     <!--  Strings for Anime Types  -->
     <string-array name="anime_types">
