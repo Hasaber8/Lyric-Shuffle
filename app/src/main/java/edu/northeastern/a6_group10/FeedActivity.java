@@ -3,7 +3,11 @@ package edu.northeastern.a6_group10;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,4 +43,21 @@ public class FeedActivity extends AppCompatActivity {
         StickerRecycler adapter = new StickerRecycler(stickerList);
         stickerRecyclerView.setAdapter(adapter);
     }
+
+    public void onSelectSticker(View view){
+        int stickerId = view.getId();
+        Intent intent = new Intent(FeedActivity.this, UserProfileListActivity.class);
+        intent.putExtra("selectedStickerId", stickerId);
+        startActivity(intent); // Start the new activity
+    }
+    public void onClickChatTab(View view){
+        Intent intent = new Intent(FeedActivity.this, FeedActivity.class);
+        startActivity(intent); // Start the new activity
+    }
+
+    public void onClickStatTab(View view){
+        Intent intent = new Intent(FeedActivity.this, FeedActivity.class);
+        startActivity(intent); // Start the new activity
+    }
+
 }

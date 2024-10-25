@@ -13,7 +13,7 @@ public class RviewHolder extends RecyclerView.ViewHolder {
 
     public RviewHolder(View itemView) {
         super(itemView);
-        resultUsername = itemView.findViewById(R.id.resultTitle);
+        resultUsername = itemView.findViewById(R.id.resultUser);
 
     }
 }

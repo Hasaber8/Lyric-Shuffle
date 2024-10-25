@@ -30,10 +30,6 @@ public class UserProfileListActivity extends AppCompatActivity {
     private RviewAdapter rviewAdapter;
     private final ArrayList<ItemCard> itemList = new ArrayList<>();
 
-    private EditText searchBox;
-    private TextView textViewResults;
-    private Spinner animeType;
-    private Spinner animeRating;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
     private final ExecutorService internetCheckExecutor = Executors.newSingleThreadExecutor();
@@ -43,12 +39,12 @@ public class UserProfileListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_at_your_service);
+        setContentView(R.layout.activity_user_list);
 
         // Initialize views
-        textViewResults = findViewById(R.id.loadingResultsTextView);
+//        textViewResults = findViewById(R.id.loadingResultsTextView);
 
-        textViewResults.setText("Connection Established");
+//        textViewResults.setText("Connection Established");
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -64,6 +60,7 @@ public class UserProfileListActivity extends AppCompatActivity {
             }
         }
 
+        System.out.println("Data from feed:" + getIntent().getIntExtra("selectedStickerId", -1));
         init(savedInstanceState);
         startInternetCheck();
     }
@@ -95,14 +92,12 @@ public class UserProfileListActivity extends AppCompatActivity {
                 mainThreadHandler.post(() -> {
                     if (result != null) {
                         parseAndDisplayUsers(result);
-                        textViewResults.setText("Connection Established");
-                    } else {
-                        textViewResults.setText("Error retrieving data.");
+//                        textViewResults.setText("Connection Established");
                     }
                 });
             } catch (Exception e) {
                 // Handle exceptions
-                mainThreadHandler.post(() -> textViewResults.setText("Failed to retrieve data: " + e.getMessage()));
+//                mainThreadHandler.post(() -> textViewResults.setText("Failed to retrieve data: " + e.getMessage()));
             }
         });
     }
@@ -127,7 +122,6 @@ public class UserProfileListActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -139,7 +133,7 @@ public class UserProfileListActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.userListRecyclerView);
         recyclerView.setHasFixedSize(true);
-
+        itemList.add(new ItemCard("test user"));
         rviewAdapter = new RviewAdapter(itemList);
 
         recyclerView.setAdapter(rviewAdapter);
@@ -153,9 +147,9 @@ public class UserProfileListActivity extends AppCompatActivity {
                 boolean isConnected = isRoutedToDB();
                 mainThreadHandler.post(() -> {
                     if (isConnected) {
-                        textViewResults.setText("Connection Established");
+//                        textViewResults.setText("Connection Established");
                     } else {
-                        textViewResults.setText("Connection Lost");
+//                        textViewResults.setText("Connection Lost");
                     }
                 });
                 try {
