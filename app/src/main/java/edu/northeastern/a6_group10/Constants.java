@@ -9,4 +9,7 @@ public class Constants {
     public static final String FIREBASE_STICKER = "stickers";
 
     public static final String STICKER_SERVICE_CHANNEL_ID = "stickItToEm";
+    public static final String NOTIFICATION_TYPE_STICKER = "sticker";
+    public static final String FIREBASE_KEY_HISTORY = "history";
+
 }

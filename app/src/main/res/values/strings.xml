@@ -9,8 +9,6 @@
     <string name="search_button">Search</string>
     <string name="anime_type">Anime Type</string>
     <string name="anime_rating">Anime Rating</string>
-    <string name="stickerChannelName">Stick It To Em</string>
-    <string name="stickerChannelDescription">Yooo, sticker received</string>
 
     <!--  Strings for Anime Types  -->
     <string-array name="anime_types">
@@ -35,7 +33,6 @@
         <item>R-17</item>
     </string-array>
 
-    <!--  Strings for Anime Results  -->
     <string name="results_icon">Results Icon</string>
     <string name="about_button">About us</string>
     <string name="stick_it_to_em_button">Stick It To Em</string>
@@ -46,4 +43,6 @@
     <string name="select_user">Select User to send the sticker to:</string>
     <string name="selected_sticker">Selected Sticker:</string>
     <string name="users_icon">Users Icon</string>
+    <string name="sticker_channel_name">Stick It To Em</string>
+    <string name="sticker_channel_description">Yooo, sticker received</string>
 </resources>
