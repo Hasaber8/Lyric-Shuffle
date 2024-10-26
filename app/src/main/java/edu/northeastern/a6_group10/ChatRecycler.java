@@ -7,12 +7,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ChatRecycler extends RecyclerView.Adapter<ChatRecycler.ChatViewHolder> {
 
-    private List<Chat> chatList;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm"); // To format the date
+    private final List<Chat> chatList;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault());
 
     public ChatRecycler(List<Chat> chatList) {
         this.chatList = chatList;
@@ -28,8 +30,12 @@ public class ChatRecycler extends RecyclerView.Adapter<ChatRecycler.ChatViewHold
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         Chat chat = chatList.get(position);
-        holder.chatFromCount.setText("From: " + chat.getFromCount());
-        holder.chatTimestamp.setText("Timestamp: " + dateFormat.format(chat.getTimestamp())); // Format the timestamp
+        holder.chatSender.setText("From: " + chat.getSenderId());
+
+        // Convert epoch time (ServerValue.TIMESTAMP) to formatted date string
+        Date date = new Date(chat.getTimestamp());
+        String formattedDate = dateFormat.format(date);
+        holder.chatTimestamp.setText("Timestamp: " + formattedDate);
     }
 
     @Override
@@ -38,13 +44,13 @@ public class ChatRecycler extends RecyclerView.Adapter<ChatRecycler.ChatViewHold
     }
 
     public static class ChatViewHolder extends RecyclerView.ViewHolder {
-        TextView chatFromCount;
+        TextView chatSender;
         TextView chatTimestamp;
 
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
-            chatFromCount = itemView.findViewById(R.id.sentNumberValue);   // Adjust this ID to match the "fromCount"
-            chatTimestamp = itemView.findViewById(R.id.timestampValue);    // Adjust this ID to match the "timestamp"
+            chatSender = itemView.findViewById(R.id.senderValue);
+            chatTimestamp = itemView.findViewById(R.id.timestampValue);
         }
     }
 }
