@@ -1,5 +1,7 @@
 package edu.northeastern.a6_group10;
 
+import android.graphics.Bitmap;
+
 /**
  * FirebaseSticker class to represent a sticker object in Firebase.
  */
@@ -23,4 +25,5 @@ public class FirebaseSticker {
     public String getUrl() {
         return url;
     }
+
 }

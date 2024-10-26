@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.app.NotificationChannel;
@@ -21,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -28,6 +31,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FeedActivity extends AppCompatActivity {
 
@@ -39,6 +43,8 @@ public class FeedActivity extends AppCompatActivity {
     private static final FirebaseDatabase db = FirebaseDatabase.getInstance();
     private String currentUsername;
 
+    private StickerNotificationManager notificationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +54,11 @@ public class FeedActivity extends AppCompatActivity {
         currentUsername = getSharedPreferences(Constants.LOCAL_DATASTORE_STICKERS, MODE_PRIVATE)
                 .getString(Constants.LOCAL_DATASTORE_USERNAME_KEY, "");
 
-        // dummy notification
-        createNotificationChannel();
-        showNotification();
+        notificationManager = StickerNotificationManager.getInstance(this);
+
+       if (!currentUsername.isEmpty()) {
+           notificationManager.setupMessageListener(currentUsername);
+       }
 
         usernameTextView = findViewById(R.id.userNameTextView);
         usernameTextView.setText(currentUsername);
@@ -165,33 +173,79 @@ public class FeedActivity extends AppCompatActivity {
         });
     }
 
-    private void createNotificationChannel() {
-        NotificationChannel channel = new NotificationChannel(
-                Constants.STICKER_SERVICE_CHANNEL_ID,
-                getString(R.string.stickerChannelName),
-                NotificationManager.IMPORTANCE_DEFAULT
-        );
-        channel.setDescription(getString(R.string.stickerChannelDescription));
-
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
-    }
-
-    private void showNotification() {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, Constants.STICKER_SERVICE_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_chat)
-                .setContentTitle(getString(R.string.stickerChannelName))
-                .setContentText(getString(R.string.stickerChannelDescription))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        notificationManager.notify(1, notificationBuilder.build());
-    }
-
     public void onSelectSticker(View view) {
         int stickerId = view.getId();
         Intent intent = new Intent(FeedActivity.this, UserProfileListActivity.class);
         intent.putExtra("selectedStickerId", stickerId);
         startActivity(intent); // Start the new activity
+    }
+
+    // Add this method to test notifications
+    private void testSendNotification() {
+        if (currentUsername.isEmpty()) {
+            Toast.makeText(this, "No username set", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Create a reference to the messages path
+        DatabaseReference messagesRef = db.getReference("messages")
+                .child(currentUsername)
+                .child("history");
+
+        // Create a new message with a push key
+        DatabaseReference newMessageRef = messagesRef.push();
+
+        // Create the message data
+        Map<String, Object> messageData = new HashMap<>();
+        messageData.put("senderId", "testUser");
+        messageData.put("stickerId", "sad_cat");  // Use an existing sticker ID from your database
+        messageData.put("timestamp", ServerValue.TIMESTAMP);
+
+        // Add the test message to Firebase
+        newMessageRef.setValue(messageData)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("FeedActivity", "Test message added successfully");
+                    Toast.makeText(FeedActivity.this, "Test notification sent", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("FeedActivity", "Error adding test message", e);
+                    Toast.makeText(FeedActivity.this, "Failed to send test notification", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    // Add this method to handle the button click
+    public void onTestNotificationClick(View view) {
+        testMultipleStickers();
+    }
+
+    // Optional: Add this method to test different stickers
+    private void testMultipleStickers() {
+        String[] stickerIds = {"facepalm", "huh_cat", "huh_man"};
+
+        // Use Handler for delayed execution
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        for (int i = 0; i < stickerIds.length; i++) {
+            final String stickerId = stickerIds[i];
+            handler.postDelayed(() -> {
+                DatabaseReference messagesRef = db.getReference("messages")
+                        .child(currentUsername)
+                        .child("history");
+
+                DatabaseReference newMessageRef = messagesRef.push();
+
+                Map<String, Object> messageData = new HashMap<>();
+                messageData.put("senderId", "testUser" + stickerId);
+                messageData.put("stickerId", stickerId);
+                messageData.put("timestamp", ServerValue.TIMESTAMP);
+
+                newMessageRef.setValue(messageData)
+                        .addOnSuccessListener(aVoid ->
+                                Log.d("FeedActivity", "Test message added: " + stickerId))
+                        .addOnFailureListener(e ->
+                                Log.e("FeedActivity", "Error adding message: " + stickerId, e));
+
+            }, i * 2000); // 2 second delay between each notification
+        }
     }
 }

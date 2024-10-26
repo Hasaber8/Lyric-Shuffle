@@ -8,6 +8,14 @@
     android:background="@color/white"
     android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
 
+    <Button
+        android:id="@+id/testNotificationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test Notification"
+        android:onClick="onTestNotificationClick"
+        android:layout_margin="16dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/stickerRecyclerView"
         android:layout_width="match_parent"
