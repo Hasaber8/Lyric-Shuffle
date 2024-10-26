@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +78,23 @@ public class FeedActivity extends AppCompatActivity {
         // Set the adapter
         adapter = new StickerRecycler(stickerList);
         stickerRecyclerView.setAdapter(adapter);
+
+        BottomNavigationView bottomNavigationMenuView = findViewById(R.id.bottomNavigationFeed);
+        bottomNavigationMenuView.setSelectedItemId(R.id.nav_stats);
+
+        bottomNavigationMenuView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.nav_chats) {
+                Intent intent = new Intent(FeedActivity.this, ChatActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return false; //so that this does not remain selected when the activity comes into focus
+            } else if (item.getItemId() == R.id.nav_stats) {
+                // We're already on FeedActivity, so no action is needed
+                return true;
+            }
+            return false;
+        });
 
         fetchStickerListFromDatabase();
     }
@@ -137,19 +156,10 @@ public class FeedActivity extends AppCompatActivity {
         notificationManager.notify(1, notificationBuilder.build());
     }
 
-    public void onSelectSticker(View view){
+    public void onSelectSticker(View view) {
         int stickerId = view.getId();
         Intent intent = new Intent(FeedActivity.this, UserProfileListActivity.class);
         intent.putExtra("selectedStickerId", stickerId);
-        startActivity(intent); // Start the new activity
-    }
-    public void onClickChatTab(View view){
-        Intent intent = new Intent(FeedActivity.this, FeedActivity.class);
-        startActivity(intent); // Start the new activity
-    }
-
-    public void onClickStatTab(View view){
-        Intent intent = new Intent(FeedActivity.this, FeedActivity.class);
         startActivity(intent); // Start the new activity
     }
 

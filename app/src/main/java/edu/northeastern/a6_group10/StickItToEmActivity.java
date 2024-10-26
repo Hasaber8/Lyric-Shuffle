@@ -33,7 +33,7 @@ public class StickItToEmActivity extends AppCompatActivity {
                     editor.putString(Constants.LOCAL_DATASTORE_USERNAME_KEY, username);
                     editor.apply();
 
-                    Intent intent = new Intent(StickItToEmActivity.this, FeedActivity.class);
+                    Intent intent = new Intent(StickItToEmActivity.this, ChatActivity.class);
                     startActivity(intent);
                 }
             }

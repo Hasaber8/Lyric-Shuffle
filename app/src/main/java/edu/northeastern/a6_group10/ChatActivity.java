@@ -3,7 +3,14 @@ package edu.northeastern.a6_group10;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,5 +47,24 @@ public class ChatActivity extends AppCompatActivity {
         // Set the adapter
         ChatRecycler adapter = new ChatRecycler(chatList);
         chatRecyclerView.setAdapter(adapter);
+
+        BottomNavigationView bottomNavigationMenuView = findViewById(R.id.bottomNavigationChat);
+        bottomNavigationMenuView.setSelectedItemId(R.id.nav_chats); // Set default selected item
+
+        bottomNavigationMenuView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.nav_chats) {
+                // We're already on ChatActivity, so no action is needed
+                return true;
+            } else if (item.getItemId() == R.id.nav_stats) {
+                Intent intent = new Intent(ChatActivity.this, FeedActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return false; //so that this does not remain selected when the activity comes into focus
+
+            }
+            return false;
+        });
     }
+
 }

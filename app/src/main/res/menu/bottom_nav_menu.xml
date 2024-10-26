@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+<<<<<<< HEAD
         android:id="@+id/nav_stats"
         android:icon="@drawable/ic_stats"
         android:title="Sticker Stats"/>
@@ -8,4 +9,15 @@
         android:id="@+id/nav_chats"
         android:icon="@drawable/ic_chat"
         android:title="Chats"/>
+=======
+        android:id="@+id/nav_chats"
+        android:icon="@drawable/ic_chat"
+
+        android:title="Chats" />
+    <item
+        android:id="@+id/nav_stats"
+        android:icon="@drawable/ic_stats"
+
+        android:title="Sticker Stats" />
+>>>>>>> 42de5d6 (Menu item click transitions)
 </menu>
