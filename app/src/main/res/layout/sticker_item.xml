@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     app:layout_constraintHeight_min="40dp"
-    android:layout_height="wrap_content"
+    android:layout_height="80dp"
     android:layout_marginVertical="7dp"
     android:layout_marginHorizontal="10dp"
     android:clickable="true"
@@ -45,7 +45,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.056"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@id/resultIcon"
             app:layout_constraintTop_toTopOf="parent" />
 
