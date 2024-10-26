@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FeedActivity extends AppCompatActivity {
@@ -77,12 +78,11 @@ public class FeedActivity extends AppCompatActivity {
         adapter = new StickerRecycler(stickerList);
         stickerRecyclerView.setAdapter(adapter);
 
-        fetchStickerListFromDatabase();
+        fetchStickerData();
     }
 
-    private void fetchStickerListFromDatabase() {
-        Log.d("FeedActivity", "Fetching sticker list from Firebase Database");
-        DatabaseReference stickerStatsRef = db.getReference(Constants.FIREBASE_KEY_STATS + "/" + currentUsername);
+    private void fetchStickerData() {
+        Log.d("FeedActivity", "Fetching sticker data from Firebase");
 
         if (currentUsername.isEmpty()) {
             Log.d("FeedActivity", "Username is empty");
@@ -90,24 +90,68 @@ public class FeedActivity extends AppCompatActivity {
             return;
         }
 
-        stickerStatsRef.addValueEventListener(new ValueEventListener() {
+        DatabaseReference stickersRef = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_STICKER);
+        DatabaseReference statsRef = db.getReference(Constants.FIREBASE_KEY_STATS + "/" + currentUsername);
+
+        Log.d("FeedActivity", "Stats Reference Path: " + statsRef.toString());
+
+        statsRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("FeedActivity", "Successfully read sticker list from Firebase Database");
-                List<Sticker> updatedStickerList = new ArrayList<>();
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    Log.d("FeedActivity", "Sticker ID: " + child.getKey() + ", Count: " + child.getValue(Integer.class));
-                    String stickerId = child.getKey();
-                    int stickerCount = child.getValue(Integer.class);
-                    updatedStickerList.add(new Sticker(stickerId, stickerCount));
+            public void onDataChange(@NonNull DataSnapshot statsSnapshot) {
+                Log.d("FeedActivity", "Stats data changed. Number of stats entries: " + statsSnapshot.getChildrenCount());
+
+                // Create a map to store counts for each sticker
+                final java.util.Map<String, Integer> stickerCounts = new HashMap<>();
+
+                for (DataSnapshot statChild : statsSnapshot.getChildren()) {
+                    String stickerId = statChild.getKey();
+                    Integer count = statChild.getValue(Integer.class);
+                    stickerCounts.put(stickerId, count);
+                    Log.d("FeedActivity", "Found count for sticker: " + stickerId + " = " + count);
                 }
-                adapter.updateStickerList(updatedStickerList);
+
+                stickersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot urlSnapshot) {
+                        List<Sticker> finalStickerList = new ArrayList<>();
+
+                        for (DataSnapshot urlChild : urlSnapshot.getChildren()) {
+                            String stickerId = urlChild.getKey();
+                            String imageUrl = urlChild.getValue(String.class);
+
+                            int count = stickerCounts.getOrDefault(stickerId, 0);
+
+                            Log.d("FeedActivity", "Creating sticker - ID: " + stickerId +
+                                    ", URL: " + imageUrl +
+                                    ", Count: " + count);
+
+                            if (imageUrl != null && !imageUrl.isEmpty()) {
+                                finalStickerList.add(new Sticker(stickerId, count, imageUrl));
+                            }
+                        }
+
+                        Log.d("FeedActivity", "Updating adapter with " + finalStickerList.size() + " stickers");
+                        for (Sticker sticker : finalStickerList) {
+                            Log.d("FeedActivity", "Final sticker - Name: " + sticker.getName() +
+                                    ", Count: " + sticker.getCount() +
+                                    ", URL: " + sticker.getImageUrl());
+                        }
+
+                        adapter.updateStickerList(finalStickerList);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e("FeedActivity", "Failed to read URL data", databaseError.toException());
+                        Toast.makeText(FeedActivity.this, "Failed to read sticker URLs", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("FeedActivity", "Failed to read sticker list from Firebase Database");
-                Toast.makeText(FeedActivity.this, "Failed to read sticker list from the Database", Toast.LENGTH_SHORT).show();
+                Log.e("FeedActivity", "Failed to read stats data", error.toException());
+                Toast.makeText(FeedActivity.this, "Failed to read sticker counts", Toast.LENGTH_SHORT).show();
             }
         });
     }
