@@ -44,12 +44,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <!-- From Count TextView -->
+            <!-- Sender TextView -->
             <TextView
-                android:id="@+id/sentNumberValue"
+                android:id="@+id/senderValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="From: #"
+                android:text="From: -sender-"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -59,7 +59,7 @@
                 android:id="@+id/timestampValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Timestamp: 1"
+                android:text="Timestamp: -timestamp-"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:layout_marginTop="4dp"
