@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class StickerRecycler extends RecyclerView.Adapter<StickerRecycler.StickerViewHolder> {
@@ -29,10 +32,17 @@ public class StickerRecycler extends RecyclerView.Adapter<StickerRecycler.Sticke
     @Override
     public void onBindViewHolder(@NonNull StickerViewHolder holder, int position) {
         Sticker sticker = stickerList.get(position);
-        //holder.stickerLogo.setImageResource(sticker.getLogoResId());
         holder.stickerName.setText(sticker.getName());
         holder.stickerCount.setText("Sent: " + sticker.getCount());
+
+        String imageUrl = sticker.getImageUrl();
+        Log.d("Sticker URL", "Loading URL: " + imageUrl);
+
+        Glide.with(holder.itemView.getContext())
+                .load(imageUrl)
+                .into(holder.stickerIcon);
     }
+
 
     @Override
     public int getItemCount() {
@@ -47,12 +57,12 @@ public class StickerRecycler extends RecyclerView.Adapter<StickerRecycler.Sticke
     }
 
     public static class StickerViewHolder extends RecyclerView.ViewHolder {
-        ImageView stickerLogo;
+        ImageView stickerIcon;
         TextView stickerName, stickerCount;
 
         public StickerViewHolder(@NonNull View itemView) {
             super(itemView);
-            //stickerLogo = itemView.findViewById(R.id.stickerLogo);
+            stickerIcon = itemView.findViewById(R.id.stickerIcon);
             stickerName = itemView.findViewById(R.id.stickerName);
             stickerCount = itemView.findViewById(R.id.sentNumberValue);
         }
