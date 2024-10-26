@@ -35,6 +35,8 @@ public class UserProfileListActivity extends AppCompatActivity {
     private final ExecutorService internetCheckExecutor = Executors.newSingleThreadExecutor();
     private volatile boolean dbCheckRunning = true;
 
+    private String imageUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,7 +135,8 @@ public class UserProfileListActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.userListRecyclerView);
         recyclerView.setHasFixedSize(true);
-        itemList.add(new ItemCard("test user"));
+        imageUrl = "";
+        itemList.add(new ItemCard("test user", imageUrl));
         rviewAdapter = new RviewAdapter(itemList);
 
         recyclerView.setAdapter(rviewAdapter);
