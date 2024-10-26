@@ -1,5 +1,7 @@
 package edu.northeastern.a6_group10;
 
+import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,13 @@ public class StickerRecycler extends RecyclerView.Adapter<StickerRecycler.Sticke
     @Override
     public int getItemCount() {
         return stickerList.size();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateStickerList(List<Sticker> newStickerList) {
+        Log.d("StickerRecycler", "Updating sticker list");
+        this.stickerList = newStickerList;
+        notifyDataSetChanged();
     }
 
     public static class StickerViewHolder extends RecyclerView.ViewHolder {
