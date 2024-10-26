@@ -8,17 +8,14 @@ import androidx.annotation.NonNull;
 public class ItemCard implements Parcelable {
 
     private String username;
-    private String imageUrl;
 
     // Constructor
-    public ItemCard(String username, String imageUrl) {
+    public ItemCard(String username) {
         this.username = username;
-        this.imageUrl = imageUrl;
     }
 
     protected ItemCard(Parcel in) {
         username = in.readString();
-        imageUrl = in.readString();
     }
 
     public static final Creator<ItemCard> CREATOR = new Creator<ItemCard>() {
@@ -41,7 +38,6 @@ public class ItemCard implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(username);
-        dest.writeString(imageUrl);
     }
 
     // Getters and Setters
@@ -51,10 +47,6 @@ public class ItemCard implements Parcelable {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
     }
 
 }

@@ -6,6 +6,7 @@ public class Constants {
 
     public static final String FIREBASE_KEY_STATS = "stats";
     public static final String FIREBASE_KEY_MESSAGES = "messages";
+    public static final String FIREBASE_STICKER = "stickers";
 
     public static final String STICKER_SERVICE_CHANNEL_ID = "stickItToEm";
 }

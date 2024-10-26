@@ -35,10 +35,6 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder> {
         ItemCard currentItem = itemList.get(position);
 
         holder.resultUsername.setText(currentItem.getUsername());
-
-        Glide.with(holder.itemView.getContext())
-                .load(currentItem.getImageUrl())
-                .into(holder.stickerIcon);
     }
 
     @Override
