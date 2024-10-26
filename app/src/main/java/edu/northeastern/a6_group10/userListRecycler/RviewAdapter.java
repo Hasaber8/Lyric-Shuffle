@@ -3,9 +3,12 @@ package edu.northeastern.a6_group10.userListRecycler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -32,6 +35,10 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder> {
         ItemCard currentItem = itemList.get(position);
 
         holder.resultUsername.setText(currentItem.getUsername());
+
+        Glide.with(holder.itemView.getContext())
+                .load(currentItem.getImageUrl())
+                .into(holder.stickerIcon);
     }
 
     @Override

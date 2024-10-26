@@ -10,10 +10,12 @@ import edu.northeastern.a6_group10.R;
 
 public class RviewHolder extends RecyclerView.ViewHolder {
     public TextView resultUsername;
+    public ImageView stickerIcon;
 
     public RviewHolder(View itemView) {
         super(itemView);
         resultUsername = itemView.findViewById(R.id.resultUser);
+        stickerIcon = itemView.findViewById(R.id.resultIcon);
 
     }
 }
