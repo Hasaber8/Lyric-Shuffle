@@ -28,7 +28,6 @@ import java.util.List;
 
 public class FeedActivity extends AppCompatActivity {
 
-    public static final String STICKER_SERVICE_CHANNEL_ID = "stickItToEm";
     private TextView usernameTextView;
 
     StickerRecycler adapter;
@@ -116,7 +115,7 @@ public class FeedActivity extends AppCompatActivity {
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
-                    STICKER_SERVICE_CHANNEL_ID,
+                    Constants.STICKER_SERVICE_CHANNEL_ID,
                     getString(R.string.stickerChannelName),
                     NotificationManager.IMPORTANCE_DEFAULT
             );
@@ -130,7 +129,7 @@ public class FeedActivity extends AppCompatActivity {
     private void showNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, STICKER_SERVICE_CHANNEL_ID)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, Constants.STICKER_SERVICE_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_chat)
                 .setContentTitle(getString(R.string.stickerChannelName))
                 .setContentText(getString(R.string.stickerChannelDescription))
