@@ -58,24 +58,6 @@ public class FeedActivity extends AppCompatActivity {
         RecyclerView stickerRecyclerView = findViewById(R.id.stickerRecyclerView);
         stickerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // TODO: Temp data. Fetch stickers and add sticker image for each
-//        List<Sticker> stickerList = new ArrayList<>();
-//        stickerList.add(new Sticker( "Funny Cat", 10));
-//        stickerList.add(new Sticker("Cute Dog", 5));
-//        stickerList.add(new Sticker("Cool Emoji", 12));
-//        stickerList.add(new Sticker( "Funny Cat", 10));
-//        stickerList.add(new Sticker("Cute Dog", 5));
-//        stickerList.add(new Sticker("Cool Emoji", 12));
-//        stickerList.add(new Sticker( "Funny Cat", 10));
-//        stickerList.add(new Sticker("Cute Dog", 5));
-//        stickerList.add(new Sticker("Cool Emoji", 12));
-//        stickerList.add(new Sticker( "Funny Cat", 10));
-//        stickerList.add(new Sticker("Cute Dog", 5));
-//        stickerList.add(new Sticker("Cool Emoji", 12));
-//        stickerList.add(new Sticker( "Funny Cat", 10));
-//        stickerList.add(new Sticker("Cute Dog", 5));
-//        stickerList.add(new Sticker("Cool Emoji", 12));
-
         // Set the adapter
         adapter = new StickerRecycler(stickerList);
         stickerRecyclerView.setAdapter(adapter);
@@ -109,10 +91,10 @@ public class FeedActivity extends AppCompatActivity {
             return;
         }
 
-        DatabaseReference stickersRef = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_STICKER);
+        DatabaseReference stickersRef = db.getReference(Constants.FIREBASE_STICKER);
         DatabaseReference statsRef = db.getReference(Constants.FIREBASE_KEY_STATS + "/" + currentUsername);
 
-        Log.d("FeedActivity", "Stats Reference Path: " + statsRef.toString());
+        Log.d("FeedActivity", "Stats Reference Path: " + statsRef);
 
         statsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -131,12 +113,20 @@ public class FeedActivity extends AppCompatActivity {
 
                 stickersRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot urlSnapshot) {
+                    public void onDataChange(@NonNull DataSnapshot urlSnapshot) {
                         List<Sticker> finalStickerList = new ArrayList<>();
 
                         for (DataSnapshot urlChild : urlSnapshot.getChildren()) {
                             String stickerId = urlChild.getKey();
-                            String imageUrl = urlChild.getValue(String.class);
+                            FirebaseSticker st = urlChild.getValue(FirebaseSticker.class);
+                            if (st == null) {
+                                Log.e("FeedActivity", "Failed to read sticker data for ID: " + stickerId);
+                                Toast.makeText(FeedActivity.this, "Failed to read sticker data for ID: "
+                                                + stickerId, Toast.LENGTH_SHORT).show();
+                                continue;
+                            }
+                            String imageUrl = st.getUrl();
+                            String stickerName = st.getName();
 
                             int count = stickerCounts.getOrDefault(stickerId, 0);
 
@@ -145,7 +135,7 @@ public class FeedActivity extends AppCompatActivity {
                                     ", Count: " + count);
 
                             if (imageUrl != null && !imageUrl.isEmpty()) {
-                                finalStickerList.add(new Sticker(stickerId, count, imageUrl));
+                                finalStickerList.add(new Sticker(stickerName, count, imageUrl));
                             }
                         }
 
@@ -160,7 +150,7 @@ public class FeedActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
                         Log.e("FeedActivity", "Failed to read URL data", databaseError.toException());
                         Toast.makeText(FeedActivity.this, "Failed to read sticker URLs", Toast.LENGTH_SHORT).show();
                     }
@@ -176,17 +166,15 @@ public class FeedActivity extends AppCompatActivity {
     }
 
     private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    Constants.STICKER_SERVICE_CHANNEL_ID,
-                    getString(R.string.stickerChannelName),
-                    NotificationManager.IMPORTANCE_DEFAULT
-            );
-            channel.setDescription(getString(R.string.stickerChannelDescription));
+        NotificationChannel channel = new NotificationChannel(
+                Constants.STICKER_SERVICE_CHANNEL_ID,
+                getString(R.string.stickerChannelName),
+                NotificationManager.IMPORTANCE_DEFAULT
+        );
+        channel.setDescription(getString(R.string.stickerChannelDescription));
 
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
     }
 
     private void showNotification() {
@@ -206,5 +194,4 @@ public class FeedActivity extends AppCompatActivity {
         intent.putExtra("selectedStickerId", stickerId);
         startActivity(intent); // Start the new activity
     }
-
 }
