@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/gray_1">
 
-    <!-- App Bar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
@@ -42,7 +41,6 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <!-- Scrollable Content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -58,7 +56,6 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp">
 
-            <!-- Play Now Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/playNowCard"
                 android:layout_width="match_parent"
@@ -109,14 +106,12 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Menu Grid -->
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="2"
                 android:useDefaultMargins="true">
 
-                <!-- Leaderboard Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/leaderboardCard"
                     android:layout_width="0dp"
@@ -159,7 +154,6 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- How to Play Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/howToPlayCard"
                     android:layout_width="0dp"
@@ -252,7 +246,6 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"

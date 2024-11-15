@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="#0A74DA">
 
-    <!-- App Title -->
     <TextView
         android:id="@+id/appTitle"
         android:layout_width="wrap_content"
@@ -16,7 +15,6 @@
         android:layout_marginTop="80dp"
         android:layout_centerHorizontal="true" />
 
-    <!-- Subtitle below the title -->
     <TextView
         android:id="@+id/loginSubtitle"
         android:layout_width="wrap_content"
@@ -28,7 +26,6 @@
         android:layout_marginTop="8dp"
         android:layout_centerHorizontal="true" />
 
-    <!-- Login Form Container (CardView for rounded corners) -->
     <androidx.cardview.widget.CardView
         android:id="@+id/loginContainer"
         android:layout_width="match_parent"
@@ -81,14 +78,12 @@
 
                 <TextView
                     android:id="@+id/forgotPassword"
-                    android:layout_width="170dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingStart="80dp"
                     android:text="Forgot Password?"
-                    android:textColor="#4A90E2" />
+                    android:textColor="#4A90E2"
+                    android:layout_marginStart="80dp" />
             </LinearLayout>
-
 
             <Button
                 android:id="@+id/loginButton"
@@ -98,34 +93,34 @@
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#0A74DA"
                 android:layout_marginTop="24dp"
-                android:paddingVertical="12dp"
-                android:layout_marginBottom="8dp"/>
+                android:paddingVertical="12dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/signUpPrompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Don’t have an account? "
+                    android:textColor="#4A4A4A" />
+
+                <TextView
+                    android:id="@+id/signUpButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign Up"
+                    android:textColor="#4A90E2"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginBottom="20dp"/>
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Sign-Up Section -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/loginContainer"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp">
-
-        <TextView
-            android:id="@+id/signUpPrompt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Don’t have an account? "
-            android:textColor="#4A4A4A" />
-
-        <TextView
-            android:id="@+id/signUpButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sign Up"
-            android:textColor="#4A90E2"
-            android:clickable="true"
-            android:focusable="true" />
-    </LinearLayout>
 </RelativeLayout>
