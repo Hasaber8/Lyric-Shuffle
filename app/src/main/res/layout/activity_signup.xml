@@ -131,6 +131,24 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
+            <!-- Username Field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/blue_primary"
+                android:textColorHint="@color/gray_600">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/usernameField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Username"
+                    android:inputType="text"
+                    android:textColor="@color/gray_900"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
             <!-- Email Field -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
