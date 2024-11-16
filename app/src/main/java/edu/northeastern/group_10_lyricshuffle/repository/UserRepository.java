@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.ZonedDateTime;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import edu.northeastern.group_10_lyricshuffle.db.DatabaseManager;
@@ -113,8 +113,8 @@ public class UserRepository {
                 rs.getString("username"),
                 rs.getString("email"),
                 rs.getString("password_hash"),
-                (ZonedDateTime) rs.getObject("created_at"),
-                (ZonedDateTime) rs.getObject("updated_at")
+                (Timestamp) rs.getObject("created_at"),
+                (Timestamp) rs.getObject("updated_at")
         );
     }
 }

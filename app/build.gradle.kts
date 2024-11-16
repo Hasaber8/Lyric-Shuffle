@@ -14,6 +14,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -41,6 +42,7 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0")
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation("org.postgresql:postgresql:42.2.27")
+    implementation("org.postgresql:postgresql:42.2.5")
+    implementation("androidx.multidex:multidex:2.0.1")
     implementation("org.mindrot:jbcrypt:0.4")
 }
