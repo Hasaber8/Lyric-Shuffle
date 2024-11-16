@@ -64,6 +64,8 @@
                 app:cardBackgroundColor="@color/blue_primary"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="8dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:foreground="?attr/selectableItemBackground">
 
                 <LinearLayout
@@ -71,7 +73,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="24dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:duplicateParentState="true">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -119,6 +122,8 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="2dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     app:cardBackgroundColor="@color/white">
 
@@ -161,6 +166,8 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="2dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     app:cardBackgroundColor="@color/white">
 
@@ -205,6 +212,8 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="2dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     app:cardBackgroundColor="@color/white">
 
