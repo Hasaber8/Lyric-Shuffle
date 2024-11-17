@@ -79,8 +79,7 @@ public class LeaderboardActivity extends AppCompatActivity {
             entries.add(new LeaderboardEntry(
                     rank,
                     names[i],
-                    score,
-                    R.drawable.ic_user
+                    score
             ));
         }
 

@@ -24,8 +24,6 @@
         android:layout_marginStart="12dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_user"
-        app:tint="@color/gray_500"
-        android:background="@color/gray_100"
         app:shapeAppearanceOverlay="@style/CircleImageView"/>
 
     <!-- User Name -->

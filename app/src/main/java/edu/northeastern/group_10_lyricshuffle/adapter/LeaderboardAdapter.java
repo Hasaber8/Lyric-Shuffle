@@ -1,5 +1,6 @@
 package edu.northeastern.group_10_lyricshuffle.adapter;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import java.util.List;
 import edu.northeastern.group_10_lyricshuffle.R;
 import edu.northeastern.group_10_lyricshuffle.model.LeaderboardEntry;
+import edu.northeastern.group_10_lyricshuffle.util.IdenticonGenerator;
 
 public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.ViewHolder> {
     private final List<LeaderboardEntry> entries;
@@ -29,9 +31,18 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LeaderboardEntry entry = entries.get(position);
+
+        // Set rank
         holder.rankText.setText(String.valueOf(entry.getRank()));
-        holder.profileImage.setImageResource(entry.getProfileImageResId());
+
+        // Generate and set identicon
+        Bitmap identicon = IdenticonGenerator.generate(entry.getUserName());
+        holder.profileImage.setImageBitmap(identicon);
+
+        // Set username
         holder.userName.setText(entry.getUserName());
+
+        // Set score
         holder.scoreText.setText(String.format("%,d pts", entry.getScore()));
     }
 

@@ -45,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
         leaderboardCard.setOnClickListener(v -> {
             // Launch from card click
             Intent intent = new Intent(HomeActivity.this, LeaderboardActivity.class);
-            intent.putExtra("FROM_BOTTOM_NAV", false);
+            intent.putExtra("FROM_BOTTOM_NAV", true);
             startActivity(intent);
         });
     }
