@@ -12,6 +12,7 @@
         android:id="@+id/appLogo"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:contentDescription="TODO"
         android:src="@drawable/ic_trophy"
         app:layout_constraintBottom_toTopOf="@id/appTitle"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -89,7 +90,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:baselineAligned="false" android:orientation="horizontal"
                 android:layout_marginBottom="16dp">
 
                 <!-- First Name Field -->

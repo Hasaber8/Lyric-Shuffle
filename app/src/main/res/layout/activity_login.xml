@@ -11,6 +11,7 @@
         android:id="@+id/appLogo"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:contentDescription="TODO"
         android:src="@drawable/ic_trophy"
         app:layout_constraintBottom_toTopOf="@id/appTitle"
         app:layout_constraintLeft_toLeftOf="parent"

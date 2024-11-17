@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_50">
+
+    <!-- App Bar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:elevation="1dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="16dp">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="TODO"
+                android:src="@drawable/ic_arrow_left"
+                app:tint="@color/gray_900" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="32dp"
+                android:layout_toEndOf="@id/backButton"
+                android:text="Leaderboard"
+                android:textColor="@color/gray_900"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-medium"/>
+
+        </RelativeLayout>
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <!-- Top Players -->
+    <LinearLayout
+        android:id="@+id/topPlayersContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:baselineAligned="false"
+        app:layout_constraintTop_toBottomOf="@id/topAppBar">
+
+        <!-- Second Place -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/secondPlaceImage"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_user"
+                    app:tint="@color/gray_500"
+                    android:background="@color/gray_100"
+                    app:shapeAppearanceOverlay="@style/CircleImageView"/>
+
+                <TextView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/circle_background_silver"
+                    android:gravity="center"
+                    android:text="2"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"/>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/secondPlaceName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Jane Smith"
+                android:textColor="@color/gray_900"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/secondPlaceScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2,850 pts"
+                android:textColor="@color/gray_600"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+        <!-- First Place -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/firstPlaceImage"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_user"
+                    app:tint="@color/gray_500"
+                    android:background="@color/gray_100"
+                    app:shapeAppearanceOverlay="@style/CircleImageView"/>
+
+                <TextView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/circle_background_gold"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/firstPlaceName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="John Doe"
+                android:textColor="@color/gray_900"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/firstPlaceScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3,240 pts"
+                android:textColor="@color/gray_600"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+        <!-- Third Place -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/thirdPlaceImage"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_user"
+                    app:tint="@color/gray_500"
+                    android:background="@color/gray_100"
+                    app:shapeAppearanceOverlay="@style/CircleImageView"/>
+
+                <TextView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/circle_background_bronze"
+                    android:gravity="center"
+                    android:text="3"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"/>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/thirdPlaceName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Mike Johnson"
+                android:textColor="@color/gray_900"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/thirdPlaceScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2,620 pts"
+                android:textColor="@color/gray_600"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/gray_100"
+        app:layout_constraintTop_toBottomOf="@id/topPlayersContainer"/>
+
+    <!-- Rankings List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rankingsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

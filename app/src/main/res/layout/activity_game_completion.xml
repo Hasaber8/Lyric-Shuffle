@@ -58,6 +58,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:gravity="center">
 
@@ -71,6 +72,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:contentDescription="TODO"
                         android:src="@drawable/ic_star"
                         app:tint="@color/white"
                         android:layout_marginBottom="8dp"/>
@@ -103,6 +105,7 @@
                         android:layout_width="24dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
+                        android:contentDescription="TODO"
                         android:src="@drawable/ic_clock"
                         app:tint="@color/white" />
 
@@ -133,6 +136,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:contentDescription="TODO"
                         android:src="@drawable/ic_trophy"
                         app:tint="@color/white"
                         android:layout_marginBottom="8dp"/>
@@ -230,6 +234,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="TODO"
             android:src="@drawable/ic_home"
             app:tint="@color/white"/>
 
@@ -243,14 +248,6 @@
             app:cornerRadius="24dp"
             android:paddingHorizontal="48dp"
             android:backgroundTint="@color/white"/>
-
-        <ImageButton
-            android:id="@+id/shareButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_share"
-            app:tint="@color/white"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
