@@ -18,9 +18,11 @@
         android:theme="@style/Theme.Group_10_LyricShuffle"
         tools:targetApi="31">
         <activity
-            android:name=".LeaderboardActivity"
+            android:name=".GameActivity"
             android:exported="false" />
-        <!-- MainActivity declaration -->
+        <activity
+            android:name=".LeaderboardActivity"
+            android:exported="false" /> <!-- MainActivity declaration -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -32,13 +34,13 @@
         </activity> <!-- LoginActivity declaration -->
         <activity
             android:name=".LoginActivity"
-            android:exported="true"></activity> <!-- HomeActivity declaration -->
+            android:exported="true" /> <!-- HomeActivity declaration -->
         <activity
             android:name=".HomeActivity"
-            android:exported="true"></activity> <!-- SignUpActivity declaration -->
+            android:exported="true" /> <!-- SignUpActivity declaration -->
         <activity
             android:name=".SignupActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>
