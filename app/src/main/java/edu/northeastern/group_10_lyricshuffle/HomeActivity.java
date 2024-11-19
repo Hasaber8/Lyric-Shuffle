@@ -18,6 +18,7 @@ public class HomeActivity extends AppCompatActivity {
         setupBottomNavigation();
         setupLeaderboardCard();
         setupGameCard();
+        setupAboutCard();
     }
 
     private void setupBottomNavigation() {
@@ -55,6 +56,14 @@ public class HomeActivity extends AppCompatActivity {
         MaterialCardView gameCard = findViewById(R.id.playNowCard);
         gameCard.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, GameActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void setupAboutCard() {
+        MaterialCardView aboutUsCard = findViewById(R.id.aboutCard);
+        aboutUsCard.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, AboutActivity.class);
             startActivity(intent);
         });
     }

@@ -1,3 +1,19 @@
 <resources>
+    <!-- App Info -->
     <string name="app_name">Group_10_LyricShuffle</string>
+    <string name="app_description">Love music and word games? Combine the best of both worlds with LyricShuffle, the ultimate app that challenges your music knowledge and puzzle-solving skills!</string>
+    <string name="app_version">Version 1.0</string>
+    <string name="app_title">LyricShuffle</string>
+
+    <!-- Team Info -->
+    <string name="group_10">Group 10</string>
+    <string name="created_by_title">Created by Group 10</string>
+    <string name="rohan">Rohan Hasabe</string>
+    <string name="rohan_email">hasabe.r@northeastern.edu</string>
+    <string name="rachana">Rachana Kallada Jayaraj</string>
+    <string name="rachana_email">kalladajayaraj.r@northeastern.edu</string>
+    <string name="hari">Harikrishnan Unnikrishna Pillai</string>
+    <string name="hari_email">unnikrishnapillai.h@northeastern.edu</string>
+    <string name="pavan">Pavan Ramachandra Rao</string>
+    <string name="pavan_email">rao.pav@northeastern.edu</string>
 </resources>
