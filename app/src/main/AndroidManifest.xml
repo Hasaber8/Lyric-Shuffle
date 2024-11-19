@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Group_10_LyricShuffle"
         tools:targetApi="31">
         <activity
+            android:name=".AboutActivity"
+            android:exported="false" />
+        <activity
             android:name=".GameActivity"
             android:exported="false" />
         <activity
