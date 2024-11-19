@@ -226,6 +226,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
         app:layout_constraintTop_toBottomOf="@id/globalLeaderboardText" />
 
     <!-- Bottom Navigation -->
@@ -238,6 +239,6 @@
         app:itemIconTint="@color/bottom_nav_colors"
         app:itemTextColor="@color/bottom_nav_colors"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_leaderboard_menu"/>
+        app:menu="@menu/bottom_nav_game_completion"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

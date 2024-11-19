@@ -154,30 +154,26 @@
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Game Area -->
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:padding="16dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/songInfoCard"
         app:layout_constraintBottom_toTopOf="@id/submitButton">
 
-        <!-- Arranged Lines Area -->
-        <com.google.android.material.card.MaterialCardView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/white">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
+            <!-- Arranged Lines Area -->
             <LinearLayout
+                android:id="@+id/arrangedLyricsSection"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginBottom="16dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -191,26 +187,19 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/arrangedLyricsRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="287dp"
+                    android:background="@color/white"
                     android:clipToPadding="false"
-                    android:paddingVertical="8dp"/>
+                    android:minHeight="100dp"
+                    android:padding="16dp" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <!-- Available Lines Area -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/white">
-
+            <!-- Available Lines Area -->
             <LinearLayout
+                android:id="@+id/availableLyricsSection"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -224,12 +213,15 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/availableLyricsRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="357dp"
+                    android:background="@color/white"
                     android:clipToPadding="false"
-                    android:paddingVertical="8dp"/>
+                    android:minHeight="200dp"
+                    android:padding="16dp" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <!-- Submit Button -->
     <com.google.android.material.button.MaterialButton
@@ -238,7 +230,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Submit Order"
-        android:textColor="@color/black"
         android:textSize="16sp"
         android:padding="16dp"
         android:backgroundTint="@color/blue_primary"
