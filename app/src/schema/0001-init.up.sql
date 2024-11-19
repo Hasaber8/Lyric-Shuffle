@@ -37,7 +37,6 @@ CREATE TABLE IF NOT EXISTS songs (
     artist VARCHAR(255) NOT NULL,
     genre VARCHAR(100),
     difficulty_level difficulty_level NOT NULL,
-    difficulty_weight DECIMAL(5,2) NOT NULL CHECK (difficulty_weight > 0),
     CONSTRAINT valid_title CHECK (LENGTH(TRIM(title)) > 0),
     CONSTRAINT valid_artist CHECK (LENGTH(TRIM(artist)) > 0)
 );
