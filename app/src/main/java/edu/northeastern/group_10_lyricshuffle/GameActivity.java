@@ -6,11 +6,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +24,7 @@ import edu.northeastern.group_10_lyricshuffle.adapter.ArrangedLyricsAdapter;
 import edu.northeastern.group_10_lyricshuffle.adapter.AvailableLyricsAdapter;
 import edu.northeastern.group_10_lyricshuffle.model.LyricLine;
 import edu.northeastern.group_10_lyricshuffle.repository.LyricRepository;
+import edu.northeastern.group_10_lyricshuffle.repository.PlaySessionRepository;
 import edu.northeastern.group_10_lyricshuffle.repository.UserRepository;
 import edu.northeastern.group_10_lyricshuffle.service.AuthService;
 import edu.northeastern.group_10_lyricshuffle.util.UserSession;
@@ -38,8 +43,10 @@ public class GameActivity extends AppCompatActivity implements
     private List<LyricLine> originalLyrics;
     private int currentScore = 0;
     private CountDownTimer timer;
-    private static final int GAME_DURATION = 120000; // 2 minutes in milliseconds
+    private static final int GAME_DURATION = 60000; // 2 minutes in milliseconds
     private static final int POINTS_PER_CORRECT_LINE = 100;
+    private UUID songId;
+    private int difficultyMultiplier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +55,10 @@ public class GameActivity extends AppCompatActivity implements
         originalLyrics = new ArrayList<>();
 
         String songIdString = getIntent().getStringExtra("songId");
-        UUID songId = UUID.fromString(songIdString);
+        songId = UUID.fromString(songIdString);
         String songName = getIntent().getStringExtra("songName");
         String artistName = getIntent().getStringExtra("artistName");
-
+        difficultyMultiplier = getIntent().getIntExtra("multiplier", 1);
         // Update the UI with song name and artist
         TextView songNameTextView = findViewById(R.id.songNameTextView);
         TextView artistNameTextView = findViewById(R.id.artistNameTextView);
@@ -116,15 +123,6 @@ public class GameActivity extends AppCompatActivity implements
         }.start();
     }
 
-    // wip - dummy lyrics
-    // actual impl will fetch it from db.
-//    private void initializeOriginalLyrics() {
-//        originalLyrics = new ArrayList<>();
-//        originalLyrics.add(new LyricLine("But she wears short skirts, I wear t-shirts", POINTS_PER_CORRECT_LINE, 0));
-//        originalLyrics.add(new LyricLine("She's cheer captain and I'm on the bleachers", POINTS_PER_CORRECT_LINE, 1));
-//        originalLyrics.add(new LyricLine("Dreaming about the day when you wake up and find", POINTS_PER_CORRECT_LINE, 2));
-//        originalLyrics.add(new LyricLine("That what you're looking for has been here the whole time", POINTS_PER_CORRECT_LINE, 3));
-//    }
 
     private void initializeOriginalLyrics(UUID songId) {
         // Run lyrics fetching on a background thread
@@ -211,31 +209,21 @@ public class GameActivity extends AppCompatActivity implements
         submitButton.setEnabled(availableAdapter.getItemCount() == 0);
     }
 
-    // wip - dummy check answer
-//    private void checkAnswer(boolean timeOut) {
-//        if (timer != null) {
-//            timer.cancel();
-//        }
-//
-//        List<LyricLine> arrangedLyrics = arrangedAdapter.getLyrics();
-//        int totalPoints = 0;
-//        boolean allCorrect = true;
-//
-//        // Check each lyric's position
-//        for (int i = 0; i < arrangedLyrics.size(); i++) {
-//            if (arrangedLyrics.get(i).getCorrectPosition() == i) {
-//                totalPoints += POINTS_PER_CORRECT_LINE;
-//            } else {
-//                allCorrect = false;
-//            }
-//        }
-//
-//        // Update score
-//        currentScore += totalPoints;
-//        scoreText.setText(String.valueOf(currentScore));
-//
-//        showResultDialog(allCorrect, totalPoints, timeOut);
-//    }
+    private void onGameCompleted(UUID songId, UUID userId, double score) {
+        PlaySessionRepository playSessionRepository = new PlaySessionRepository();
+
+        // Save the score to the database
+        boolean isScoreSaved = playSessionRepository.saveScore(songId, userId, score);
+
+        if (isScoreSaved) {
+            // Optionally, show a success message or handle any other post-game logic
+            Toast.makeText(this, "Score saved successfully!", Toast.LENGTH_SHORT).show();
+        } else {
+            // Handle error if score saving failed
+            Toast.makeText(this, "Error saving score", Toast.LENGTH_SHORT).show();
+        }
+        Log.d("GameActivity", "Game completed with score: " + score);
+    }
 
     private void checkAnswer(boolean timeOut) {
         if (timer != null) {
@@ -255,22 +243,50 @@ public class GameActivity extends AppCompatActivity implements
             }
         }
 
+        // Calculate the remaining time in seconds
+        long remainingTimeInMillis = timerText.getText().toString().equals("0:00") ? 0 :
+                (GAME_DURATION - (long) (Integer.parseInt(timerText.getText().toString().split(":")[0]) * 60000) -
+                        (long) (Integer.parseInt(timerText.getText().toString().split(":")[1]) * 1000));
+        long remainingSeconds = remainingTimeInMillis / 1000;
+
+        int correctLines = totalPoints / POINTS_PER_CORRECT_LINE;
+        totalPoints += remainingSeconds * correctLines;
+        totalPoints *= difficultyMultiplier;
+
         // Update score
         currentScore += totalPoints;
+
         scoreText.setText(String.valueOf(currentScore));
 
-        // Save score to DB
-        UserRepository userRepository = new UserRepository();
-        UserSession userSession = UserSession.getInstance(this);
-        UUID userId = userSession.getUserId();
+        Log.d("GameActivity", "Total points: " + totalPoints);
 
-        boolean scoreSaved = userRepository.saveScore(userId, totalPoints);
+        // Save score in the background thread
+        boolean finalAllCorrect = allCorrect;
+        int finalTotalPoints = totalPoints;
+        int finalTotalPoints1 = totalPoints;
+        new Thread(() -> {
+            // Get the user session and songId
+            UserSession userSession = UserSession.getInstance(this);
+            UUID userId = userSession.getUserId();
+            UUID songId = UUID.fromString(getIntent().getStringExtra("songId")); // Get songId passed to this activity
 
-        if (!scoreSaved) {
-            Log.e("GameActivity", "Failed to save score to database");
-        }
+            // Save the score to the database
+            PlaySessionRepository playSessionRepository = new PlaySessionRepository();
+            boolean scoreSaved = playSessionRepository.saveScore(songId, userId, finalTotalPoints1);
 
-        showResultDialog(allCorrect, totalPoints, timeOut);
+            // Update the UI thread after saving the score
+            runOnUiThread(() -> {
+                if (!scoreSaved) {
+                    Log.e("GameActivity", "Failed to save score to play session table");
+                    Toast.makeText(this, "Failed to save score", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d("GameActivity", "Score saved successfully.");
+                }
+
+                // Show result dialog after saving score
+                showResultDialog(finalAllCorrect, finalTotalPoints, timeOut);
+            });
+        }).start();  // Start the background thread
     }
 
 

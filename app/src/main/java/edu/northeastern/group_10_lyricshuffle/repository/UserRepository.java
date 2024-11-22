@@ -119,21 +119,4 @@ public class UserRepository {
 
     }
 
-    public boolean saveScore(UUID userId, int score) {
-        try (Connection conn = dbManager.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement(
-                    "INSERT INTO scores (user_id, score, created_at) VALUES (?, ?, NOW())"
-            );
-            stmt.setObject(1, userId);
-            stmt.setInt(2, score);
-
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
-
-        } catch (SQLException e) {
-            Log.e(TAG, "Error saving score", e);
-            return false;
-        }
-    }
-
 }
