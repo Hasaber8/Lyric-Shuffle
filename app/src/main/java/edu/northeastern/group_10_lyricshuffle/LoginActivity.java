@@ -2,6 +2,7 @@ package edu.northeastern.group_10_lyricshuffle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -44,8 +45,13 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (result.isSuccess()) {
                         // Store user session
-                        // UserSession.getInstance().setCurrentUser(result.getData());
-
+//                         UserSession.getInstance().setCurrentUser(result.getData());
+                        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("userId", result.getData().getUserId().toString());
+                        editor.putString("username", result.getData().getUsername());
+                        editor.putString("email", result.getData().getEmail());
+                        editor.apply();
                         // Navigate to main activity
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
