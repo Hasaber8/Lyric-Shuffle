@@ -236,7 +236,7 @@ public class GameActivity extends AppCompatActivity implements
 
         // Check each lyric's position
         for (int i = 0; i < arrangedLyrics.size(); i++) {
-            if (arrangedLyrics.get(i).getCorrectPosition() == i) {
+            if (arrangedLyrics.get(i).getCorrectPosition() == i + 1) {
                 totalPoints += POINTS_PER_CORRECT_LINE;
             } else {
                 allCorrect = false;
