@@ -46,8 +46,18 @@ public class GameActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         originalLyrics = new ArrayList<>();
+
         String songIdString = getIntent().getStringExtra("songId");
         UUID songId = UUID.fromString(songIdString);
+        String songName = getIntent().getStringExtra("songName");
+        String artistName = getIntent().getStringExtra("artistName");
+
+        // Update the UI with song name and artist
+        TextView songNameTextView = findViewById(R.id.songNameTextView);
+        TextView artistNameTextView = findViewById(R.id.artistNameTextView);
+
+        songNameTextView.setText(songName);
+        artistNameTextView.setText(artistName);
         initializeViews();
         setupRecyclerViews();
         setupTimer();

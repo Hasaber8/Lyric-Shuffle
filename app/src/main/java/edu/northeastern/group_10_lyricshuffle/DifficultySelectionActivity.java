@@ -44,6 +44,8 @@ public class DifficultySelectionActivity extends AppCompatActivity {
                     String songId = song.getSongId().toString(); // Convert UUID to String
                     Intent intent = new Intent(DifficultySelectionActivity.this, GameActivity.class);
                     intent.putExtra("songId", songId); // Pass the songId to GameActivity
+                    intent.putExtra("songName", song.getTitle()); // Pass the song name
+                    intent.putExtra("artistName", song.getArtist());
                     startActivity(intent);
                 } else {
                     // In case no song was found for this difficulty
