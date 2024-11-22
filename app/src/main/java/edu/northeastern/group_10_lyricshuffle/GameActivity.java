@@ -1,5 +1,6 @@
 package edu.northeastern.group_10_lyricshuffle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -42,6 +43,9 @@ public class GameActivity extends AppCompatActivity implements
     private TextView scoreText;
     private List<LyricLine> originalLyrics;
     private int currentScore = 0;
+    private int perfectLines = 0;
+    private String songName;
+    private String artistName;
     private CountDownTimer timer;
     private static final int GAME_DURATION = 60000; // 2 minutes in milliseconds
     private static final int POINTS_PER_CORRECT_LINE = 100;
@@ -56,15 +60,10 @@ public class GameActivity extends AppCompatActivity implements
 
         String songIdString = getIntent().getStringExtra("songId");
         songId = UUID.fromString(songIdString);
-        String songName = getIntent().getStringExtra("songName");
-        String artistName = getIntent().getStringExtra("artistName");
+        songName = getIntent().getStringExtra("songName");
+        artistName = getIntent().getStringExtra("artistName");
         difficultyMultiplier = getIntent().getIntExtra("multiplier", 1);
-        // Update the UI with song name and artist
-        TextView songNameTextView = findViewById(R.id.songNameTextView);
-        TextView artistNameTextView = findViewById(R.id.artistNameTextView);
 
-        songNameTextView.setText(songName);
-        artistNameTextView.setText(artistName);
         initializeViews();
         setupRecyclerViews();
         setupTimer();
@@ -88,6 +87,13 @@ public class GameActivity extends AppCompatActivity implements
 
         // Initialize score display
         scoreText.setText("0");
+
+        // Update the UI with song name and artist
+        TextView songNameTextView = findViewById(R.id.songNameTextView);
+        TextView artistNameTextView = findViewById(R.id.artistNameTextView);
+
+        songNameTextView.setText(songName);
+        artistNameTextView.setText(artistName);
     }
 
     private void setupRecyclerViews() {
@@ -209,20 +215,34 @@ public class GameActivity extends AppCompatActivity implements
         submitButton.setEnabled(availableAdapter.getItemCount() == 0);
     }
 
-    private void onGameCompleted(UUID songId, UUID userId, double score) {
-        PlaySessionRepository playSessionRepository = new PlaySessionRepository();
+    private String formatGameTime(int totalSeconds) {
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        return String.format("%d:%02d", minutes, seconds);
+    }
 
-        // Save the score to the database
-        boolean isScoreSaved = playSessionRepository.saveScore(songId, userId, score);
 
-        if (isScoreSaved) {
-            // Optionally, show a success message or handle any other post-game logic
-            Toast.makeText(this, "Score saved successfully!", Toast.LENGTH_SHORT).show();
-        } else {
-            // Handle error if score saving failed
-            Toast.makeText(this, "Error saving score", Toast.LENGTH_SHORT).show();
-        }
-        Log.d("GameActivity", "Game completed with score: " + score);
+
+    private void onGameComplete(int totalTimeInSeconds, int timeBonus) {
+        // Prepare data for GameCompletionActivity
+        String totalTime = formatGameTime(totalTimeInSeconds); // Format total time played
+
+        // Intent to start GameCompletionActivity
+        Intent intent = new Intent(GameActivity.this, GameCompletionActivity.class);
+
+        // Pass data via Intent
+        intent.putExtra("songTitle", songName);
+        intent.putExtra("artistName", artistName);
+        intent.putExtra("totalScore", currentScore);
+        intent.putExtra("perfectLines", perfectLines);
+        intent.putExtra("timeBonus", timeBonus);
+        intent.putExtra("totalTime", totalTime);
+
+        // Start the activity
+        startActivity(intent);
+
+        // Finish GameActivity to prevent returning to it
+        finish();
     }
 
     private void checkAnswer(boolean timeOut) {
@@ -237,27 +257,33 @@ public class GameActivity extends AppCompatActivity implements
         // Check each lyric's position
         for (int i = 0; i < arrangedLyrics.size(); i++) {
             if (arrangedLyrics.get(i).getCorrectPosition() == i + 1) {
-                totalPoints += POINTS_PER_CORRECT_LINE;
+                totalPoints += POINTS_PER_CORRECT_LINE * difficultyMultiplier;
+                perfectLines++;
             } else {
                 allCorrect = false;
             }
         }
 
-        // Calculate the remaining time in seconds
-        long remainingTimeInMillis = timerText.getText().toString().equals("0:00") ? 0 :
-                (GAME_DURATION - (long) (Integer.parseInt(timerText.getText().toString().split(":")[0]) * 60000) -
-                        (long) (Integer.parseInt(timerText.getText().toString().split(":")[1]) * 1000));
-        long remainingSeconds = remainingTimeInMillis / 1000;
+//        // Calculate the remaining time in seconds
+//        long remainingTimeInMillis = timerText.getText().toString().equals("0:00") ? 0 :
+//                (GAME_DURATION - (long) (Integer.parseInt(timerText.getText().toString().split(":")[0]) * 60000) -
+//                        (long) (Integer.parseInt(timerText.getText().toString().split(":")[1]) * 1000));
+//        long remainingSeconds = remainingTimeInMillis / 1000;
 
-        int correctLines = totalPoints / POINTS_PER_CORRECT_LINE;
-        totalPoints += remainingSeconds * correctLines;
-        totalPoints *= difficultyMultiplier;
 
-        // Update score
+        String[] timeParts = timerText.getText().toString().split(":");
+        int remainingMinutes = Integer.parseInt(timeParts[0]);
+        int remainingSeconds = Integer.parseInt(timeParts[1]);
+        int elapsedSeconds = GAME_DURATION / 1000 - (remainingMinutes * 60 + remainingSeconds);
+
+        int timeBonus = remainingSeconds * perfectLines * difficultyMultiplier;
+        totalPoints += timeBonus;
+
         currentScore += totalPoints;
 
         scoreText.setText(String.valueOf(currentScore));
 
+        onGameComplete(elapsedSeconds, timeBonus);
         Log.d("GameActivity", "Total points: " + totalPoints);
 
         // Save score in the background thread

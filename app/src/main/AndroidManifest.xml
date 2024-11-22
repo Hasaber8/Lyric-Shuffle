@@ -47,6 +47,8 @@
         <activity
             android:name=".SignupActivity"
             android:exported="true" />
+        <activity android:name=".GameCompletionActivity" />
+
     </application>
 
 </manifest>
