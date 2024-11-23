@@ -168,7 +168,6 @@ public class LoginActivity extends AppCompatActivity {
             scheduler.scheduleAllNotifications();
         } else {
             Log.d(TAG, "Notifications are not enabled");
-            // Optional: You could show a message to the user that notifications are disabled
             showNotificationPermissionDeniedDialog();
         }
     }

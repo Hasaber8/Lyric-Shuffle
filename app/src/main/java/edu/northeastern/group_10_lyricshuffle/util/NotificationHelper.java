@@ -8,10 +8,8 @@ import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import androidx.core.app.NotificationCompat;
-
-import edu.northeastern.group_10_lyricshuffle.GameActivity;
+import edu.northeastern.group_10_lyricshuffle.MainActivity;
 import edu.northeastern.group_10_lyricshuffle.R;
 
 public class NotificationHelper {
@@ -43,27 +41,25 @@ public class NotificationHelper {
     }
 
     private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    CHANNEL_ID,
-                    CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_HIGH
-            );
+        NotificationChannel channel = new NotificationChannel(
+                CHANNEL_ID,
+                CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_HIGH
+        );
 
-            // Configure channel
-            channel.setDescription(CHANNEL_DESCRIPTION);
-            channel.enableVibration(true);
+        // Configure channel
+        channel.setDescription(CHANNEL_DESCRIPTION);
+        channel.enableVibration(true);
 
-            // Set custom sound
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .build();
-            channel.setSound(soundUri, audioAttributes);
+        // Set custom sound
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build();
+        channel.setSound(soundUri, audioAttributes);
 
-            // Register channel
-            notificationManager.createNotificationChannel(channel);
-        }
+        // Register channel
+        notificationManager.createNotificationChannel(channel);
     }
 
     public String getRandomMessage() {
@@ -82,7 +78,7 @@ public class NotificationHelper {
 
     public NotificationCompat.Builder createNotification(String message) {
         // Create intent for when notification is clicked
-        Intent intent = new Intent(context, GameActivity.class);
+        Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
