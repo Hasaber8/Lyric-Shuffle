@@ -264,12 +264,6 @@ public class GameActivity extends AppCompatActivity implements
             }
         }
 
-//        // Calculate the remaining time in seconds
-//        long remainingTimeInMillis = timerText.getText().toString().equals("0:00") ? 0 :
-//                (GAME_DURATION - (long) (Integer.parseInt(timerText.getText().toString().split(":")[0]) * 60000) -
-//                        (long) (Integer.parseInt(timerText.getText().toString().split(":")[1]) * 1000));
-//        long remainingSeconds = remainingTimeInMillis / 1000;
-
 
         String[] timeParts = timerText.getText().toString().split(":");
         int remainingMinutes = Integer.parseInt(timeParts[0]);
@@ -286,10 +280,7 @@ public class GameActivity extends AppCompatActivity implements
         onGameComplete(elapsedSeconds, timeBonus);
         Log.d("GameActivity", "Total points: " + totalPoints);
 
-        // Save score in the background thread
-        boolean finalAllCorrect = allCorrect;
         int finalTotalPoints = totalPoints;
-        int finalTotalPoints1 = totalPoints;
         new Thread(() -> {
             // Get the user session and songId
             UserSession userSession = UserSession.getInstance(this);
@@ -298,7 +289,7 @@ public class GameActivity extends AppCompatActivity implements
 
             // Save the score to the database
             PlaySessionRepository playSessionRepository = new PlaySessionRepository();
-            boolean scoreSaved = playSessionRepository.saveScore(songId, userId, finalTotalPoints1);
+            boolean scoreSaved = playSessionRepository.saveScore(songId, userId, finalTotalPoints);
 
             // Update the UI thread after saving the score
             runOnUiThread(() -> {
@@ -309,39 +300,8 @@ public class GameActivity extends AppCompatActivity implements
                     Log.d("GameActivity", "Score saved successfully.");
                 }
 
-                // Show result dialog after saving score
-                showResultDialog(finalAllCorrect, finalTotalPoints, timeOut);
             });
         }).start();  // Start the background thread
-    }
-
-
-    // wip - dummy result dialog
-    private void showResultDialog(boolean allCorrect, int points, boolean timeOut) {
-        String title;
-        String message;
-
-        if (timeOut) {
-            title = "Time's Up!";
-            message = String.format("You earned %d points", points);
-        } else if (allCorrect) {
-            title = "Perfect!";
-            message = String.format("Congratulations! You earned %d points", points);
-        } else {
-            title = "Nice Try!";
-            message = String.format("You earned %d points. Keep practicing!", points);
-        }
-
-        new MaterialAlertDialogBuilder(this)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton("Try Again", (dialog, which) -> {
-                    resetLyrics();
-                    setupTimer();
-                })
-                .setNegativeButton("Exit", (dialog, which) -> finish())
-                .setCancelable(false)
-                .show();
     }
 
     @Override
