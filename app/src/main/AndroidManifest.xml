@@ -48,6 +48,7 @@
             android:name=".SignupActivity"
             android:exported="true" />
         <activity android:name=".GameCompletionActivity" />
+        <activity android:name=".HowToPlayActivity" />
 
     </application>
 
