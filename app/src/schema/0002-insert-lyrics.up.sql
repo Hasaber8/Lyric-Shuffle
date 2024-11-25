@@ -126,6 +126,14 @@ VALUES
 
 INSERT INTO lyrics (lyric_order_id, song_id, lyrics)
 VALUES
+(1, (SELECT song_id FROM songs WHERE title = 'Perfect'), 'I found a love for me'),
+(2, (SELECT song_id FROM songs WHERE title = 'Perfect'), 'Darling, just dive right in and follow my lead'),
+(3, (SELECT song_id FROM songs WHERE title = 'Perfect'), 'Well, I found a girl, beautiful and sweet'),
+(4, (SELECT song_id FROM songs WHERE title = 'Perfect'), 'Oh, I never knew you were the someone waiting for me'),
+(5, (SELECT song_id FROM songs WHERE title = 'Perfect'), '‘Cause we were just kids when we fell in love');
+
+INSERT INTO lyrics (lyric_order_id, song_id, lyrics)
+VALUES
 (1, (SELECT song_id FROM songs WHERE title = 'Hello'), 'Hello, it’s me'),
 (2, (SELECT song_id FROM songs WHERE title = 'Hello'), 'I was wondering if after all these years you’d like to meet'),
 (3, (SELECT song_id FROM songs WHERE title = 'Hello'), 'To go over everything'),
