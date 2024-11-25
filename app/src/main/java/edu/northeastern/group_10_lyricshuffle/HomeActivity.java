@@ -1,8 +1,11 @@
 package edu.northeastern.group_10_lyricshuffle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 
@@ -19,6 +22,7 @@ public class HomeActivity extends AppCompatActivity {
         setupLeaderboardCard();
         setupGameCard();
         setupAboutCard();
+        setupUserButton();
     }
 
     private void setupBottomNavigation() {
@@ -64,6 +68,14 @@ public class HomeActivity extends AppCompatActivity {
         MaterialCardView aboutUsCard = findViewById(R.id.aboutCard);
         aboutUsCard.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, AboutActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void setupUserButton() {
+        ImageButton userButton = findViewById(R.id.userButton);
+        userButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
     }
