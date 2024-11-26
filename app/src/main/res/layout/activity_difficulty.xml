@@ -49,7 +49,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:contentDescription="TODO"
-                        android:src="@drawable/ic_star"
+                        android:src="@drawable/ic_target"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:tint="@color/difficulty_easy" />
@@ -176,7 +176,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:contentDescription="TODO"
-                        android:src="@drawable/ic_medium"
+                        android:src="@drawable/ic_flash"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:tint="@color/difficulty_medium" />
@@ -292,7 +292,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:contentDescription="TODO"
-                        android:src="@drawable/ic_hard"
+                        android:src="@drawable/ic_crown"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:tint="@color/difficulty_hard" />
