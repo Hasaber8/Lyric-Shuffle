@@ -74,7 +74,6 @@
                     android:layout_height="64dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_user"
-                    app:tint="@color/gray_500"
                     android:background="@color/gray_100"
                     app:shapeAppearanceOverlay="@style/CircleImageView"/>
 
@@ -127,7 +126,6 @@
                     android:layout_height="80dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_user"
-                    app:tint="@color/gray_500"
                     android:background="@color/gray_100"
                     app:shapeAppearanceOverlay="@style/CircleImageView"/>
 
@@ -181,7 +179,6 @@
                     android:layout_height="64dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_user"
-                    app:tint="@color/gray_500"
                     android:background="@color/gray_100"
                     app:shapeAppearanceOverlay="@style/CircleImageView"/>
 
