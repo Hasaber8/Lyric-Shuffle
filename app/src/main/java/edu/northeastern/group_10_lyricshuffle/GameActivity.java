@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,11 +39,14 @@ public class GameActivity extends AppCompatActivity implements
     private MaterialButton submitButton;
     private TextView timerText;
     private TextView scoreText;
+    private TextView difficultyText;
     private List<LyricLine> originalLyrics;
     private int currentScore = 0;
     private int correctLines = 0;
     private String songName;
     private String artistName;
+    private String difficulty;
+    private String difficultyCapital;
     private CountDownTimer timer;
     private static final int GAME_DURATION = 60000; // 2 minutes in milliseconds
     private static final int POINTS_PER_CORRECT_LINE = 100;
@@ -59,6 +64,8 @@ public class GameActivity extends AppCompatActivity implements
         songName = getIntent().getStringExtra("songName");
         artistName = getIntent().getStringExtra("artistName");
         difficultyMultiplier = getIntent().getIntExtra("multiplier", 1);
+        difficulty = getIntent().getStringExtra("difficulty");
+        difficultyCapital = StringUtils.capitalize(difficulty);
 
         initializeViews();
         setupRecyclerViews();
@@ -74,6 +81,7 @@ public class GameActivity extends AppCompatActivity implements
         submitButton = findViewById(R.id.submitButton);
         timerText = findViewById(R.id.timerText);
         scoreText = findViewById(R.id.scoreText);
+        difficultyText = findViewById(R.id.difficultyTextView);
 
         ImageButton backButton = findViewById(R.id.backButton);
         ImageButton refreshButton = findViewById(R.id.refreshButton);
@@ -90,6 +98,7 @@ public class GameActivity extends AppCompatActivity implements
 
         songNameTextView.setText(songName);
         artistNameTextView.setText(artistName);
+        difficultyText.setText(difficultyCapital);
     }
 
     private void setupRecyclerViews() {
@@ -125,7 +134,6 @@ public class GameActivity extends AppCompatActivity implements
         }.start();
     }
 
-
     private void initializeOriginalLyrics(UUID songId) {
         // Run lyrics fetching on a background thread
         Log.d("GameActivity", "Fetching lyrics for songId: " + songId);
@@ -149,7 +157,6 @@ public class GameActivity extends AppCompatActivity implements
             });
         }).start();
     }
-
 
     private void loadLyrics() {
         // Create a copy of original lyrics and shuffle them
@@ -216,8 +223,6 @@ public class GameActivity extends AppCompatActivity implements
         int seconds = totalSeconds % 60;
         return String.format("%d:%02d", minutes, seconds);
     }
-
-
 
     private void onGameComplete(int totalTimeInSeconds, int timeBonus, boolean allCorrect) {
         // Prepare data for GameCompletionActivity

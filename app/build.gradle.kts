@@ -46,4 +46,5 @@ dependencies {
     implementation("org.postgresql:postgresql:42.2.5")
     implementation("androidx.multidex:multidex:2.0.1")
     implementation("org.mindrot:jbcrypt:0.4")
+    implementation ("org.apache.commons:commons-lang3:3.6")
 }
