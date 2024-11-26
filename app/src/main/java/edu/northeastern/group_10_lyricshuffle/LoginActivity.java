@@ -6,9 +6,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -63,8 +63,13 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (result.isSuccess()) {
                         // Store user session
-                        // UserSession.getInstance().setCurrentUser(result.getData());
-
+//                         UserSession.getInstance().setCurrentUser(result.getData());
+                        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("userId", result.getData().getUserId().toString());
+                        editor.putString("username", result.getData().getUsername());
+                        editor.putString("email", result.getData().getEmail());
+                        editor.apply();
                         // Navigate to main activity
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);

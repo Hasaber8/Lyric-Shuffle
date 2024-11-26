@@ -116,5 +116,7 @@ public class UserRepository {
                 (Timestamp) rs.getObject("created_at"),
                 (Timestamp) rs.getObject("updated_at")
         );
+
     }
+
 }

@@ -127,13 +127,16 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/artistNameTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Taylor Swift"
                     android:textColor="@color/gray_600"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp"
+                    />
 
                 <TextView
+                    android:id="@+id/songNameTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="You Belong With Me"
