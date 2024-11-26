@@ -38,7 +38,6 @@ public class GameActivity extends AppCompatActivity implements
     private AvailableLyricsAdapter availableAdapter;
     private MaterialButton submitButton;
     private TextView timerText;
-    private TextView scoreText;
     private TextView difficultyText;
     private List<LyricLine> originalLyrics;
     private int currentScore = 0;
@@ -80,7 +79,6 @@ public class GameActivity extends AppCompatActivity implements
         availableLyricsRecyclerView = findViewById(R.id.availableLyricsRecyclerView);
         submitButton = findViewById(R.id.submitButton);
         timerText = findViewById(R.id.timerText);
-        scoreText = findViewById(R.id.scoreText);
         difficultyText = findViewById(R.id.difficultyTextView);
 
         ImageButton backButton = findViewById(R.id.backButton);
@@ -88,9 +86,6 @@ public class GameActivity extends AppCompatActivity implements
 
         backButton.setOnClickListener(v -> onBackPressed());
         refreshButton.setOnClickListener(v -> resetLyrics());
-
-        // Initialize score display
-        scoreText.setText("0");
 
         // Update the UI with song name and artist
         TextView songNameTextView = findViewById(R.id.songNameTextView);
@@ -276,8 +271,6 @@ public class GameActivity extends AppCompatActivity implements
         totalPoints += timeBonus;
 
         currentScore += totalPoints;
-
-        scoreText.setText(String.valueOf(currentScore));
 
         onGameComplete(elapsedSeconds, timeBonus, allCorrect);
         Log.d("GameActivity", "Total points: " + totalPoints);

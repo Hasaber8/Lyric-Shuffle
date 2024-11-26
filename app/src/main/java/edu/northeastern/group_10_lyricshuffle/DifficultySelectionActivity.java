@@ -1,9 +1,7 @@
 package edu.northeastern.group_10_lyricshuffle;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.card.MaterialCardView;
@@ -47,6 +45,7 @@ public class DifficultySelectionActivity extends AppCompatActivity {
                     intent.putExtra("songName", song.getTitle()); // Pass the song name
                     intent.putExtra("artistName", song.getArtist());
                     intent.putExtra("difficulty", difficulty); // pass difficulty to GameActivity
+                    intent.putExtra("multiplier", getMultiplier(difficulty)); // pass multiplier to GameActivity
                     startActivity(intent);
                 } else {
                     // In case no song was found for this difficulty
@@ -54,5 +53,22 @@ public class DifficultySelectionActivity extends AppCompatActivity {
                 }
             });
         }).start();
+    }
+
+    /**
+     * Get the multiplier based on the difficulty
+     *
+     * @param difficulty The selected difficulty
+     * @return The multiplier
+     */
+    public int getMultiplier(String difficulty) {
+        switch (difficulty) {
+            case "medium":
+                return 2;
+            case "hard":
+                return 3;
+            default:
+                return 1;
+        }
     }
 }
