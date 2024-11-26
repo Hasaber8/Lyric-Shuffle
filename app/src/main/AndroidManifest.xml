@@ -27,19 +27,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Group_10_LyricShuffle"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
         <!-- Register the BroadcastReceiver -->
         <receiver
             android:name=".util.AlarmReceiver"
             android:enabled="true"
             android:exported="false" />
-
         <receiver
             android:name=".receivers.BootReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
