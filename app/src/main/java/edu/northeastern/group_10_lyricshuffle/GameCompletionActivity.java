@@ -40,8 +40,11 @@ public class GameCompletionActivity extends AppCompatActivity {
         findViewById(R.id.playAgainCard).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent leaderboardIntent = new Intent(GameCompletionActivity.this, GameActivity.class);
-                startActivity(leaderboardIntent);
+                Intent homeIntent = new Intent(GameCompletionActivity.this, DifficultySelectionActivity.class);
+                // Clear all activities up to MainActivity (home)
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(homeIntent);
+                finish();
             }
         });
     }

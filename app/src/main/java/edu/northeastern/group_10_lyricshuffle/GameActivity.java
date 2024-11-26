@@ -61,7 +61,21 @@ public class GameActivity extends AppCompatActivity implements
         originalLyrics = new ArrayList<>();
 
         String songIdString = getIntent().getStringExtra("songId");
-        songId = UUID.fromString(songIdString);
+        if (songIdString == null) {
+            Log.e("GameActivity", "No songId provided in Intent");
+            Toast.makeText(this, "Error: Invalid song data", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        try {
+            songId = UUID.fromString(songIdString);
+        } catch (IllegalArgumentException e) {
+            Log.e("GameActivity", "Invalid UUID format: " + songIdString, e);
+            Toast.makeText(this, "Error: Invalid song data format", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
         songName = getIntent().getStringExtra("songName");
         artistName = getIntent().getStringExtra("artistName");
         difficultyMultiplier = getIntent().getIntExtra("multiplier", 1);
