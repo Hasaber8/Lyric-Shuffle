@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,8 +24,6 @@ import edu.northeastern.group_10_lyricshuffle.adapter.AvailableLyricsAdapter;
 import edu.northeastern.group_10_lyricshuffle.model.LyricLine;
 import edu.northeastern.group_10_lyricshuffle.repository.LyricRepository;
 import edu.northeastern.group_10_lyricshuffle.repository.PlaySessionRepository;
-import edu.northeastern.group_10_lyricshuffle.repository.UserRepository;
-import edu.northeastern.group_10_lyricshuffle.service.AuthService;
 import edu.northeastern.group_10_lyricshuffle.util.UserSession;
 
 public class GameActivity extends AppCompatActivity implements
@@ -43,7 +39,7 @@ public class GameActivity extends AppCompatActivity implements
     private TextView scoreText;
     private List<LyricLine> originalLyrics;
     private int currentScore = 0;
-    private int perfectLines = 0;
+    private int correctLines = 0;
     private String songName;
     private String artistName;
     private CountDownTimer timer;
@@ -223,7 +219,7 @@ public class GameActivity extends AppCompatActivity implements
 
 
 
-    private void onGameComplete(int totalTimeInSeconds, int timeBonus) {
+    private void onGameComplete(int totalTimeInSeconds, int timeBonus, boolean allCorrect) {
         // Prepare data for GameCompletionActivity
         String totalTime = formatGameTime(totalTimeInSeconds); // Format total time played
 
@@ -234,7 +230,8 @@ public class GameActivity extends AppCompatActivity implements
         intent.putExtra("songTitle", songName);
         intent.putExtra("artistName", artistName);
         intent.putExtra("totalScore", currentScore);
-        intent.putExtra("perfectLines", perfectLines);
+        intent.putExtra("correctLines", correctLines);
+        intent.putExtra("allCorrect", allCorrect);
         intent.putExtra("timeBonus", timeBonus);
         intent.putExtra("totalTime", totalTime);
 
@@ -258,7 +255,7 @@ public class GameActivity extends AppCompatActivity implements
         for (int i = 0; i < arrangedLyrics.size(); i++) {
             if (arrangedLyrics.get(i).getCorrectPosition() == i + 1) {
                 totalPoints += POINTS_PER_CORRECT_LINE * difficultyMultiplier;
-                perfectLines++;
+                correctLines++;
             } else {
                 allCorrect = false;
             }
@@ -270,14 +267,14 @@ public class GameActivity extends AppCompatActivity implements
         int remainingSeconds = Integer.parseInt(timeParts[1]);
         int elapsedSeconds = GAME_DURATION / 1000 - (remainingMinutes * 60 + remainingSeconds);
 
-        int timeBonus = remainingSeconds * perfectLines * difficultyMultiplier;
+        int timeBonus = remainingSeconds * correctLines * difficultyMultiplier;
         totalPoints += timeBonus;
 
         currentScore += totalPoints;
 
         scoreText.setText(String.valueOf(currentScore));
 
-        onGameComplete(elapsedSeconds, timeBonus);
+        onGameComplete(elapsedSeconds, timeBonus, allCorrect);
         Log.d("GameActivity", "Total points: " + totalPoints);
 
         int finalTotalPoints = totalPoints;

@@ -16,7 +16,7 @@ public class GameCompletionActivity extends AppCompatActivity {
         String songTitle = intent.getStringExtra("songTitle");
         String artistName = intent.getStringExtra("artistName");
         int totalScore = intent.getIntExtra("totalScore", 0);
-        int perfectLines = intent.getIntExtra("perfectLines", 0);
+        int correctLines = intent.getIntExtra("correctLines", 0);
         int timeBonus = intent.getIntExtra("timeBonus", 0);
         String totalTime = intent.getStringExtra("totalTime");
 
@@ -24,7 +24,7 @@ public class GameCompletionActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.songTitle)).setText(songTitle);
         ((TextView) findViewById(R.id.artistName)).setText(artistName);
         ((TextView) findViewById(R.id.totalScoreValue)).setText(String.valueOf(totalScore));
-        ((TextView) findViewById(R.id.perfectLinesValue)).setText(String.valueOf(perfectLines));
+        ((TextView) findViewById(R.id.correctLinesValue)).setText(String.valueOf(correctLines));
         ((TextView) findViewById(R.id.timeBonusValue)).setText(String.valueOf(timeBonus));
         ((TextView) findViewById(R.id.totalTimeValue)).setText(totalTime);
     }
