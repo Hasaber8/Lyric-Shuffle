@@ -1,22 +1,30 @@
 package edu.northeastern.group_10_lyricshuffle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.View;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import edu.northeastern.group_10_lyricshuffle.adapter.ArrangedLyricsAdapter;
 import edu.northeastern.group_10_lyricshuffle.adapter.AvailableLyricsAdapter;
 import edu.northeastern.group_10_lyricshuffle.model.LyricLine;
+import edu.northeastern.group_10_lyricshuffle.repository.LyricRepository;
+import edu.northeastern.group_10_lyricshuffle.repository.PlaySessionRepository;
+import edu.northeastern.group_10_lyricshuffle.util.UserSession;
 
 public class GameActivity extends AppCompatActivity implements
         ArrangedLyricsAdapter.OnLyricClickListener,
@@ -31,19 +39,31 @@ public class GameActivity extends AppCompatActivity implements
     private TextView scoreText;
     private List<LyricLine> originalLyrics;
     private int currentScore = 0;
+    private int correctLines = 0;
+    private String songName;
+    private String artistName;
     private CountDownTimer timer;
-    private static final int GAME_DURATION = 120000; // 2 minutes in milliseconds
+    private static final int GAME_DURATION = 60000; // 2 minutes in milliseconds
     private static final int POINTS_PER_CORRECT_LINE = 100;
+    private UUID songId;
+    private int difficultyMultiplier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        originalLyrics = new ArrayList<>();
+
+        String songIdString = getIntent().getStringExtra("songId");
+        songId = UUID.fromString(songIdString);
+        songName = getIntent().getStringExtra("songName");
+        artistName = getIntent().getStringExtra("artistName");
+        difficultyMultiplier = getIntent().getIntExtra("multiplier", 1);
 
         initializeViews();
         setupRecyclerViews();
         setupTimer();
-        initializeOriginalLyrics();
+        initializeOriginalLyrics(songId);
         loadLyrics();
         setupButtons();
     }
@@ -63,6 +83,13 @@ public class GameActivity extends AppCompatActivity implements
 
         // Initialize score display
         scoreText.setText("0");
+
+        // Update the UI with song name and artist
+        TextView songNameTextView = findViewById(R.id.songNameTextView);
+        TextView artistNameTextView = findViewById(R.id.artistNameTextView);
+
+        songNameTextView.setText(songName);
+        artistNameTextView.setText(artistName);
     }
 
     private void setupRecyclerViews() {
@@ -98,18 +125,35 @@ public class GameActivity extends AppCompatActivity implements
         }.start();
     }
 
-    // wip - dummy lyrics
-    // actual impl will fetch it from db.
-    private void initializeOriginalLyrics() {
-        originalLyrics = new ArrayList<>();
-        originalLyrics.add(new LyricLine("But she wears short skirts, I wear t-shirts", POINTS_PER_CORRECT_LINE, 0));
-        originalLyrics.add(new LyricLine("She's cheer captain and I'm on the bleachers", POINTS_PER_CORRECT_LINE, 1));
-        originalLyrics.add(new LyricLine("Dreaming about the day when you wake up and find", POINTS_PER_CORRECT_LINE, 2));
-        originalLyrics.add(new LyricLine("That what you're looking for has been here the whole time", POINTS_PER_CORRECT_LINE, 3));
+
+    private void initializeOriginalLyrics(UUID songId) {
+        // Run lyrics fetching on a background thread
+        Log.d("GameActivity", "Fetching lyrics for songId: " + songId);
+        new Thread(() -> {
+            LyricRepository lyricRepository = new LyricRepository();
+            List<LyricLine> lyrics = lyricRepository.getLyricsBySongId(songId);
+            Log.d("GameActivity", "Fetched lyrics: " + lyrics + " for songId: " + songId);
+            // Update UI on the main thread after fetching the lyrics
+            runOnUiThread(() -> {
+                if (lyrics.isEmpty()) {
+                    // Fallback if no lyrics are found
+                    lyrics.add(new LyricLine("Dummy lyric 1", POINTS_PER_CORRECT_LINE, 0));
+                    lyrics.add(new LyricLine("Dummy lyric 2", POINTS_PER_CORRECT_LINE, 1));
+                }
+
+                // Set the lyrics to originalLyrics and update the UI
+                originalLyrics = lyrics;
+
+                // Call any methods to update UI based on the lyrics
+                loadLyrics();
+            });
+        }).start();
     }
+
 
     private void loadLyrics() {
         // Create a copy of original lyrics and shuffle them
+        Log.d("GameActivity", "Original lyrics: " + originalLyrics);
         List<LyricLine> shuffledLyrics = new ArrayList<>(originalLyrics);
         Collections.shuffle(shuffledLyrics);
 
@@ -167,7 +211,37 @@ public class GameActivity extends AppCompatActivity implements
         submitButton.setEnabled(availableAdapter.getItemCount() == 0);
     }
 
-    // wip - dummy check answer
+    private String formatGameTime(int totalSeconds) {
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        return String.format("%d:%02d", minutes, seconds);
+    }
+
+
+
+    private void onGameComplete(int totalTimeInSeconds, int timeBonus, boolean allCorrect) {
+        // Prepare data for GameCompletionActivity
+        String totalTime = formatGameTime(totalTimeInSeconds); // Format total time played
+
+        // Intent to start GameCompletionActivity
+        Intent intent = new Intent(GameActivity.this, GameCompletionActivity.class);
+
+        // Pass data via Intent
+        intent.putExtra("songTitle", songName);
+        intent.putExtra("artistName", artistName);
+        intent.putExtra("totalScore", currentScore);
+        intent.putExtra("correctLines", correctLines);
+        intent.putExtra("allCorrect", allCorrect);
+        intent.putExtra("timeBonus", timeBonus);
+        intent.putExtra("totalTime", totalTime);
+
+        // Start the activity
+        startActivity(intent);
+
+        // Finish GameActivity to prevent returning to it
+        finish();
+    }
+
     private void checkAnswer(boolean timeOut) {
         if (timer != null) {
             timer.cancel();
@@ -179,46 +253,52 @@ public class GameActivity extends AppCompatActivity implements
 
         // Check each lyric's position
         for (int i = 0; i < arrangedLyrics.size(); i++) {
-            if (arrangedLyrics.get(i).getCorrectPosition() == i) {
-                totalPoints += POINTS_PER_CORRECT_LINE;
+            if (arrangedLyrics.get(i).getCorrectPosition() == i + 1) {
+                totalPoints += POINTS_PER_CORRECT_LINE * difficultyMultiplier;
+                correctLines++;
             } else {
                 allCorrect = false;
             }
         }
 
-        // Update score
+
+        String[] timeParts = timerText.getText().toString().split(":");
+        int remainingMinutes = Integer.parseInt(timeParts[0]);
+        int remainingSeconds = Integer.parseInt(timeParts[1]);
+        int elapsedSeconds = GAME_DURATION / 1000 - (remainingMinutes * 60 + remainingSeconds);
+
+        int timeBonus = remainingSeconds * correctLines * difficultyMultiplier;
+        totalPoints += timeBonus;
+
         currentScore += totalPoints;
+
         scoreText.setText(String.valueOf(currentScore));
 
-        showResultDialog(allCorrect, totalPoints, timeOut);
-    }
+        onGameComplete(elapsedSeconds, timeBonus, allCorrect);
+        Log.d("GameActivity", "Total points: " + totalPoints);
 
-    // wip - dummy result dialog
-    private void showResultDialog(boolean allCorrect, int points, boolean timeOut) {
-        String title;
-        String message;
+        int finalTotalPoints = totalPoints;
+        new Thread(() -> {
+            // Get the user session and songId
+            UserSession userSession = UserSession.getInstance(this);
+            UUID userId = userSession.getUserId();
+            UUID songId = UUID.fromString(getIntent().getStringExtra("songId")); // Get songId passed to this activity
 
-        if (timeOut) {
-            title = "Time's Up!";
-            message = String.format("You earned %d points", points);
-        } else if (allCorrect) {
-            title = "Perfect!";
-            message = String.format("Congratulations! You earned %d points", points);
-        } else {
-            title = "Nice Try!";
-            message = String.format("You earned %d points. Keep practicing!", points);
-        }
+            // Save the score to the database
+            PlaySessionRepository playSessionRepository = new PlaySessionRepository();
+            boolean scoreSaved = playSessionRepository.saveScore(songId, userId, finalTotalPoints);
 
-        new MaterialAlertDialogBuilder(this)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton("Try Again", (dialog, which) -> {
-                    resetLyrics();
-                    setupTimer();
-                })
-                .setNegativeButton("Exit", (dialog, which) -> finish())
-                .setCancelable(false)
-                .show();
+            // Update the UI thread after saving the score
+            runOnUiThread(() -> {
+                if (!scoreSaved) {
+                    Log.e("GameActivity", "Failed to save score to play session table");
+                    Toast.makeText(this, "Failed to save score", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d("GameActivity", "Score saved successfully.");
+                }
+
+            });
+        }).start();  // Start the background thread
     }
 
     @Override

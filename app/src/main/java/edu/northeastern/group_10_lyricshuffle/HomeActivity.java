@@ -23,6 +23,7 @@ public class HomeActivity extends AppCompatActivity {
         setupGameCard();
         setupAboutCard();
         setupUserButton();
+        setupHowToPlayCard();
     }
 
     private void setupBottomNavigation() {
@@ -59,7 +60,7 @@ public class HomeActivity extends AppCompatActivity {
     private void setupGameCard() {
         MaterialCardView gameCard = findViewById(R.id.playNowCard);
         gameCard.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, GameActivity.class);
+            Intent intent = new Intent(HomeActivity.this, DifficultySelectionActivity.class);
             startActivity(intent);
         });
     }
@@ -79,4 +80,13 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+    private void setupHowToPlayCard() {
+        MaterialCardView aboutUsCard = findViewById(R.id.howToPlayCard);
+        aboutUsCard.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, HowToPlayActivity.class);
+            startActivity(intent);
+        });
+    }
+
 }
