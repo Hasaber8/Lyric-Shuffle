@@ -1,6 +1,7 @@
 package edu.northeastern.group_10_lyricshuffle;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -47,10 +48,11 @@ public class GameActivity extends AppCompatActivity implements
     private String difficulty;
     private String difficultyCapital;
     private CountDownTimer timer;
-    private static final int GAME_DURATION = 60000; // 2 minutes in milliseconds
+    private static final int GAME_DURATION = 60000;
     private static final int POINTS_PER_CORRECT_LINE = 100;
     private UUID songId;
     private int difficultyMultiplier;
+    private MediaPlayer tickSoundPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,15 +117,28 @@ public class GameActivity extends AppCompatActivity implements
             timer.cancel();
         }
 
+        tickSoundPlayer = MediaPlayer.create(this, R.raw.tick_sound);
+
         timer = new CountDownTimer(GAME_DURATION, 1000) {
             public void onTick(long millisUntilFinished) {
                 int minutes = (int) (millisUntilFinished / 1000) / 60;
                 int seconds = (int) (millisUntilFinished / 1000) % 60;
                 timerText.setText(String.format("%d:%02d", minutes, seconds));
+
+                if (millisUntilFinished <= 10000) { // Last 10 seconds
+                    if (tickSoundPlayer != null && !tickSoundPlayer.isPlaying()) {
+                        tickSoundPlayer.start();
+                    }
+                }
             }
 
             public void onFinish() {
                 timerText.setText("0:00");
+                if (tickSoundPlayer != null) {
+                    tickSoundPlayer.stop();
+                    tickSoundPlayer.release();
+                    tickSoundPlayer = null;
+                }
                 checkAnswer(true);
             }
         }.start();
