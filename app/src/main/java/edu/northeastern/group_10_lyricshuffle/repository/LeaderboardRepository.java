@@ -37,7 +37,6 @@ public class LeaderboardRepository {
                             "        FROM play_session sub_ps " +
                             "        WHERE sub_ps.user_id = ps.user_id " +
                             "        ORDER BY sub_ps.date_played DESC " +
-                            "        LIMIT 10 " +
                             "    ) " +
                             ") subquery " +
                             "GROUP BY username " +
