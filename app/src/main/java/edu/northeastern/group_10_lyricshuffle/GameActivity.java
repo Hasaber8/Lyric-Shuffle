@@ -112,6 +112,26 @@ public class GameActivity extends AppCompatActivity implements
         difficultyText.setText(difficultyCapital);
     }
 
+    @Override
+    @SuppressWarnings("MissingSuperCall")
+    public void onBackPressed() {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Quit Game")
+                .setMessage("Are you sure you want to quit?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    // If user confirms, finish the game with a score of 0
+                    if (timer != null) {
+                        timer.cancel();
+                    }
+                    onGameComplete(0, 0, false);
+                })
+                .setNegativeButton("No", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setCancelable(false)
+                .show();
+    }
+
     private void setupRecyclerViews() {
         // Initialize adapters
         arrangedAdapter = new ArrangedLyricsAdapter(this);
@@ -248,9 +268,15 @@ public class GameActivity extends AppCompatActivity implements
         return String.format("%d:%02d", minutes, seconds);
     }
 
+    private int calculateMaxPossibleScore() {
+        int totalLyrics = originalLyrics.size();
+        return totalLyrics * POINTS_PER_CORRECT_LINE * difficultyMultiplier;
+    }
+
     private void onGameComplete(int totalTimeInSeconds, int timeBonus, boolean allCorrect) {
         // Prepare data for GameCompletionActivity
         String totalTime = formatGameTime(totalTimeInSeconds); // Format total time played
+        int maxPossibleScore = calculateMaxPossibleScore();
 
         // Intent to start GameCompletionActivity
         Intent intent = new Intent(GameActivity.this, GameCompletionActivity.class);
@@ -263,6 +289,7 @@ public class GameActivity extends AppCompatActivity implements
         intent.putExtra("allCorrect", allCorrect);
         intent.putExtra("timeBonus", timeBonus);
         intent.putExtra("totalTime", totalTime);
+        intent.putExtra("maxPossibleScore", maxPossibleScore);
 
         // Start the activity
         startActivity(intent);
