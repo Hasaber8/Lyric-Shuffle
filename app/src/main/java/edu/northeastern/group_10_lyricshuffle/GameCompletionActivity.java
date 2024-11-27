@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class GameCompletionActivity extends AppCompatActivity {
     @Override
@@ -28,6 +29,21 @@ public class GameCompletionActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.correctLinesValue)).setText(String.valueOf(correctLines));
         ((TextView) findViewById(R.id.timeBonusValue)).setText(String.valueOf(timeBonus));
         ((TextView) findViewById(R.id.totalTimeValue)).setText(totalTime);
+
+        ConstraintLayout layout = findViewById(R.id.rootLayout);
+        View scoreCard = findViewById(R.id.scoreCard);
+
+        int maxPossibleScore = intent.getIntExtra("maxPossibleScore", 0);
+        if (totalScore == maxPossibleScore) {
+            layout.setBackgroundColor(getResources().getColor(R.color.green_primary));
+            scoreCard.setBackgroundColor(getResources().getColor(R.color.green_secondary));
+        } else if (totalScore >= maxPossibleScore / 2) {
+            layout.setBackgroundColor(getResources().getColor(R.color.blue_primary));
+            scoreCard.setBackgroundColor(getResources().getColor(R.color.blue_secondary));
+        } else {
+            layout.setBackgroundColor(getResources().getColor(R.color.red_primary));
+            scoreCard.setBackgroundColor(getResources().getColor(R.color.red_secondary));
+        }
 
         findViewById(R.id.leaderboardCard).setOnClickListener(new View.OnClickListener() {
             @Override

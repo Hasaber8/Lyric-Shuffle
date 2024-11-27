@@ -7,6 +7,10 @@
     <color name="amber">#D97706</color>
     <color name="purple">#9333EA</color>
     <color name="green">#16A34A</color>
+    <color name="green_primary">#2E7D32</color>
+    <color name="green_secondary">#388E3C</color>
+    <color name="red_primary">#C62828</color>
+    <color name="red_secondary">#D32F2F</color>
     <color name="blue_700">#1D4ED8</color>
 
     <!-- Grays -->
