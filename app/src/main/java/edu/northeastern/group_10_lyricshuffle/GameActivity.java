@@ -112,6 +112,26 @@ public class GameActivity extends AppCompatActivity implements
         difficultyText.setText(difficultyCapital);
     }
 
+    @Override
+    @SuppressWarnings("MissingSuperCall")
+    public void onBackPressed() {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Quit Game")
+                .setMessage("Are you sure you want to quit?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    // If user confirms, finish the game with a score of 0
+                    if (timer != null) {
+                        timer.cancel();
+                    }
+                    onGameComplete(0, 0, false);
+                })
+                .setNegativeButton("No", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setCancelable(false)
+                .show();
+    }
+
     private void setupRecyclerViews() {
         // Initialize adapters
         arrangedAdapter = new ArrangedLyricsAdapter(this);
