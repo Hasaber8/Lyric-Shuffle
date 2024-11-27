@@ -248,9 +248,15 @@ public class GameActivity extends AppCompatActivity implements
         return String.format("%d:%02d", minutes, seconds);
     }
 
+    private int calculateMaxPossibleScore() {
+        int totalLyrics = originalLyrics.size();
+        return totalLyrics * POINTS_PER_CORRECT_LINE * difficultyMultiplier;
+    }
+
     private void onGameComplete(int totalTimeInSeconds, int timeBonus, boolean allCorrect) {
         // Prepare data for GameCompletionActivity
         String totalTime = formatGameTime(totalTimeInSeconds); // Format total time played
+        int maxPossibleScore = calculateMaxPossibleScore();
 
         // Intent to start GameCompletionActivity
         Intent intent = new Intent(GameActivity.this, GameCompletionActivity.class);
@@ -263,6 +269,7 @@ public class GameActivity extends AppCompatActivity implements
         intent.putExtra("allCorrect", allCorrect);
         intent.putExtra("timeBonus", timeBonus);
         intent.putExtra("totalTime", totalTime);
+        intent.putExtra("maxPossibleScore", maxPossibleScore);
 
         // Start the activity
         startActivity(intent);

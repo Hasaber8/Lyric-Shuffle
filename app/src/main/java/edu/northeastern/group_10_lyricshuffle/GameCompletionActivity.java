@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class GameCompletionActivity extends AppCompatActivity {
     @Override
@@ -20,6 +21,7 @@ public class GameCompletionActivity extends AppCompatActivity {
         int correctLines = intent.getIntExtra("correctLines", 0);
         int timeBonus = intent.getIntExtra("timeBonus", 0);
         String totalTime = intent.getStringExtra("totalTime");
+        int maxPossibleScore = intent.getIntExtra("maxPossibleScore", 0);
 
         // Set data to views
         ((TextView) findViewById(R.id.songTitle)).setText(songTitle);
@@ -29,23 +31,35 @@ public class GameCompletionActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.timeBonusValue)).setText(String.valueOf(timeBonus));
         ((TextView) findViewById(R.id.totalTimeValue)).setText(totalTime);
 
-        findViewById(R.id.leaderboardCard).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent leaderboardIntent = new Intent(GameCompletionActivity.this, LeaderboardActivity.class);
-                startActivity(leaderboardIntent);
-            }
+        // Dynamic background updates
+        ConstraintLayout layout = findViewById(R.id.rootLayout);
+        View scoreCard = findViewById(R.id.scoreCard);
+
+        if (totalScore >= maxPossibleScore) {
+            // User scored maximum points
+            layout.setBackgroundColor(getResources().getColor(R.color.green_primary));
+            scoreCard.setBackgroundColor(getResources().getColor(R.color.green_secondary));
+        } else if (totalScore < maxPossibleScore && totalScore > 0) {
+            // User scored half or more of max points
+            layout.setBackgroundColor(getResources().getColor(R.color.blue_primary));
+            scoreCard.setBackgroundColor(getResources().getColor(R.color.blue_secondary));
+        } else if (totalScore == 0){
+            // User scored less than half or no points
+            layout.setBackgroundColor(getResources().getColor(R.color.red_primary));
+            scoreCard.setBackgroundColor(getResources().getColor(R.color.red_secondary));
+        }
+
+        // Set click listeners
+        findViewById(R.id.leaderboardCard).setOnClickListener(v -> {
+            Intent leaderboardIntent = new Intent(GameCompletionActivity.this, LeaderboardActivity.class);
+            startActivity(leaderboardIntent);
         });
 
-        findViewById(R.id.playAgainCard).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent homeIntent = new Intent(GameCompletionActivity.this, DifficultySelectionActivity.class);
-                // Clear all activities up to MainActivity (home)
-                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(homeIntent);
-                finish();
-            }
+        findViewById(R.id.playAgainCard).setOnClickListener(v -> {
+            Intent homeIntent = new Intent(GameCompletionActivity.this, DifficultySelectionActivity.class);
+            homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(homeIntent);
+            finish();
         });
     }
 }
