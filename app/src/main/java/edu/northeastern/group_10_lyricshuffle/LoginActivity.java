@@ -1,14 +1,7 @@
 package edu.northeastern.group_10_lyricshuffle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -21,10 +14,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import edu.northeastern.group_10_lyricshuffle.model.User;
 import edu.northeastern.group_10_lyricshuffle.service.AuthService;
 import edu.northeastern.group_10_lyricshuffle.util.NotificationScheduler;
 import edu.northeastern.group_10_lyricshuffle.util.Result;
+import edu.northeastern.group_10_lyricshuffle.util.UserSession;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -63,13 +65,8 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (result.isSuccess()) {
                         // Store user session
-//                         UserSession.getInstance().setCurrentUser(result.getData());
-                        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("userId", result.getData().getUserId().toString());
-                        editor.putString("username", result.getData().getUsername());
-                        editor.putString("email", result.getData().getEmail());
-                        editor.apply();
+                        UserSession.getInstance(this).saveUser(result.getData());
+
                         // Navigate to main activity
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
@@ -88,6 +85,15 @@ public class LoginActivity extends AppCompatActivity {
                 // Navigate to SignUpActivity
                 Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        // on pressing the back button, in case the user has logged out, then they should just
+        // exit the app, and not go back to the previous screen (home)
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finishAffinity();
             }
         });
     }

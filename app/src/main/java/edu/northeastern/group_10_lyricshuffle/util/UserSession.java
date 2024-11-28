@@ -2,6 +2,7 @@ package edu.northeastern.group_10_lyricshuffle.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.util.UUID;
 
@@ -45,7 +46,7 @@ public class UserSession {
             try {
                 return UUID.fromString(userIdString);
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
+                Log.e("UserSession", "Invalid UUID string: " + userIdString);
             }
         }
         return null;

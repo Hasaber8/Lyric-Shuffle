@@ -1,8 +1,11 @@
 package edu.northeastern.group_10_lyricshuffle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import edu.northeastern.group_10_lyricshuffle.util.UserSession;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -10,8 +13,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Start LoginActivity
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        Intent intent;
+        if (UserSession.getInstance(this).isLoggedIn()) {
+            // User is logged in, redirect to Home page
+            intent = new Intent(MainActivity.this, HomeActivity.class);
+        } else {
+            // User is not logged in, redirect to Login page
+            intent = new Intent(MainActivity.this, LoginActivity.class);
+        }
         startActivity(intent);
         finish();
     }
