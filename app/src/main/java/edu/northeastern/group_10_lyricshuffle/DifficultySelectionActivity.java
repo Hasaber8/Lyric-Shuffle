@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
 
 import edu.northeastern.group_10_lyricshuffle.repository.SongRepository;
@@ -19,6 +21,10 @@ public class DifficultySelectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_difficulty);
 
         songRepository = new SongRepository();
+
+        // setup toolbar back button, to go back to the home screen
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         MaterialCardView easyCard = findViewById(R.id.easyCard);
         MaterialCardView mediumCard = findViewById(R.id.mediumCard);

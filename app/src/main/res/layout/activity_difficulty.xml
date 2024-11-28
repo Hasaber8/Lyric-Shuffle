@@ -12,7 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:title="Select Difficulty"
-        app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge" />
+        app:titleTextAppearance="@style/TextAppearance.Material3.TitleMedium" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
