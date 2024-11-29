@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rootLayout"
     android:background="@color/blue_primary">
 
     <!-- Game Complete Text -->
@@ -13,14 +11,14 @@
         android:id="@+id/gameCompleteText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:fontFamily="sans-serif-medium"
         android:text="Game Complete!"
         android:textColor="@color/white"
         android:textSize="32sp"
-        android:fontFamily="sans-serif-medium"
-        android:layout_marginTop="64dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Score Card -->
     <com.google.android.material.card.MaterialCardView
@@ -29,8 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
-        app:cardCornerRadius="16dp"
         app:cardBackgroundColor="@color/blue_secondary"
+        app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         app:layout_constraintTop_toBottomOf="@id/gameCompleteText">
 
@@ -44,41 +42,41 @@
                 android:id="@+id/totalScoreValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="sans-serif-medium"
                 android:text="1250"
                 android:textColor="@color/white"
-                android:textSize="48sp"
-                android:fontFamily="sans-serif-medium"
-                android:layout_gravity="center_horizontal" />
+                android:textSize="48sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"
                 android:text="Total Score"
                 android:textColor="#BFDBFE"
-                android:textSize="16sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="24dp" />
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <!-- Perfect Lines -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:layout_marginBottom="8dp"
                         android:src="@drawable/ic_star"
-                        app:tint="@color/white"
-                        android:layout_marginBottom="8dp" />
+                        app:tint="@color/white" />
 
                     <TextView
                         android:id="@+id/correctLinesValue"
@@ -102,8 +100,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="24dp"
@@ -116,10 +114,10 @@
                         android:id="@+id/timeBonusValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
                         android:text="+200"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
-                        android:fontFamily="sans-serif-medium" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -134,24 +132,24 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:layout_marginBottom="8dp"
                         android:src="@drawable/ic_trophy"
-                        app:tint="@color/white"
-                        android:layout_marginBottom="8dp" />
+                        app:tint="@color/white" />
 
                     <TextView
                         android:id="@+id/totalTimeValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
                         android:text="1:23"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
-                        android:fontFamily="sans-serif-medium" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -169,9 +167,9 @@
         android:id="@+id/songInfoLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
         android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/scoreCard">
 
         <TextView
@@ -185,10 +183,10 @@
             android:id="@+id/songTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
             android:text="You Belong With Me"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:fontFamily="sans-serif-medium" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/artistName"
@@ -204,16 +202,17 @@
         android:id="@+id/whiteBackground"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/white"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/songInfoLayout"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/songInfoLayout" />
 
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
         android:columnCount="2"
         android:useDefaultMargins="true"
         app:layout_constraintBottom_toBottomOf="parent"

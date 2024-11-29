@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:padding="16dp"
+        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
@@ -31,11 +31,11 @@
                 android:id="@+id/easyCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginVertical="8dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="16dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -88,8 +88,8 @@
                         android:id="@+id/easyStatsContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@+id/easyDivider"
-                        android:layout_marginTop="16dp">
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintTop_toBottomOf="@+id/easyDivider">
 
                         <!-- Base Points -->
                         <TextView
@@ -117,8 +117,8 @@
                             android:layout_height="wrap_content"
                             android:text="Time Limit"
                             android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
-                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="@id/easyBasePointsLabel" />
 
                         <TextView
@@ -158,11 +158,11 @@
                 android:id="@+id/mediumCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginVertical="8dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="16dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
                 app:layout_constraintTop_toBottomOf="@id/easyCard">
 
@@ -214,11 +214,11 @@
                         android:id="@+id/mediumBasePointsLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
                         android:text="Base Points"
                         android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/mediumDivider"
-                        android:layout_marginTop="16dp" />
+                        app:layout_constraintTop_toBottomOf="@id/mediumDivider" />
 
                     <TextView
                         android:id="@+id/mediumBasePoints"
@@ -235,8 +235,8 @@
                         android:layout_height="wrap_content"
                         android:text="Time Limit"
                         android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@id/mediumBasePointsLabel" />
 
                     <TextView
@@ -270,15 +270,16 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Hard Difficulty Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/hardCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginVertical="8dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="16dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
                 app:layout_constraintTop_toBottomOf="@id/mediumCard">
 
@@ -330,11 +331,11 @@
                         android:id="@+id/hardBasePointsLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
                         android:text="Base Points"
                         android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/hardDivider"
-                        android:layout_marginTop="16dp" />
+                        app:layout_constraintTop_toBottomOf="@id/hardDivider" />
 
                     <TextView
                         android:id="@+id/hardBasePoints"
@@ -351,8 +352,8 @@
                         android:layout_height="wrap_content"
                         android:text="Time Limit"
                         android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@id/hardBasePointsLabel" />
 
                     <TextView
@@ -386,20 +387,20 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-
+            <!-- Footer Text -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:padding="8dp"
+                android:text="Score = Base Points × Difficulty Multiplier × Combo Bonus\nAdditional sequence for perfect timing and complete"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hardCard" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
-    <!-- Footer Text -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:padding="8dp"
-        android:text="Score = Base Points × Difficulty Multiplier × Combo Bonus\nAdditional sequence for perfect timing and complete"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
