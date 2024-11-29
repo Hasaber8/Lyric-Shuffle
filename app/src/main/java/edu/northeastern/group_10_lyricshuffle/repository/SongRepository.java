@@ -1,6 +1,6 @@
 package edu.northeastern.group_10_lyricshuffle.repository;
 
-import android.database.Cursor;
+import android.content.Context;
 import android.database.SQLException;
 import android.util.Log;
 
@@ -16,8 +16,8 @@ public class SongRepository {
     private static final String TAG = "SongRepository";
     private final DatabaseManager dbManager;
 
-    public SongRepository() {
-        this.dbManager = DatabaseManager.getInstance();
+    public SongRepository(Context context) {
+        this.dbManager = DatabaseManager.getInstance(context);
     }
 
     // Method to get a random song by difficulty

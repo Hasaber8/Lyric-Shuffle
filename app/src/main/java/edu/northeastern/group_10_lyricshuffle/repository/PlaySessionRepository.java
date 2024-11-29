@@ -1,10 +1,13 @@
 package edu.northeastern.group_10_lyricshuffle.repository;
 
+import android.content.Context;
 import android.util.Log;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.UUID;
+
 import edu.northeastern.group_10_lyricshuffle.db.DatabaseManager;
 
 public class PlaySessionRepository {
@@ -12,8 +15,8 @@ public class PlaySessionRepository {
     private static final String TAG = "PlaySessionRepository";
     private final DatabaseManager dbManager;
 
-    public PlaySessionRepository() {
-        this.dbManager = DatabaseManager.getInstance();
+    public PlaySessionRepository(Context context) {
+        this.dbManager = DatabaseManager.getInstance(context);
     }
 
     public boolean saveScore(UUID songId, UUID userId, double score) {

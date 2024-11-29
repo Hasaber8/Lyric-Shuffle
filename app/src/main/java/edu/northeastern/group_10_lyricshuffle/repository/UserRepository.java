@@ -1,5 +1,6 @@
 package edu.northeastern.group_10_lyricshuffle.repository;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.sql.Connection;
@@ -17,8 +18,8 @@ public class UserRepository {
     private static final String TAG = "UserRepository";
     private final DatabaseManager dbManager;
 
-    public UserRepository() {
-        this.dbManager = DatabaseManager.getInstance();
+    public UserRepository(Context context) {
+        this.dbManager = DatabaseManager.getInstance(context);
     }
 
     // Create user with pre-hashed password

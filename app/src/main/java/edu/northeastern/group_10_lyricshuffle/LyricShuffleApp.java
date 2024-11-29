@@ -25,6 +25,6 @@ public class LyricShuffleApp extends MultiDexApplication {
     public void onTerminate() {
         super.onTerminate();
         // Clean up database connections
-        DatabaseManager.getInstance().closeConnection();
+        DatabaseManager.cleanup();
     }
 }

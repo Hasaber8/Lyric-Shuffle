@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         // Check notification permission
         checkNotificationPermission();
 
-        authService = new AuthService();
+        authService = new AuthService(getApplicationContext());
 
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);

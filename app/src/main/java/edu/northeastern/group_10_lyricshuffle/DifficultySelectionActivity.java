@@ -20,7 +20,7 @@ public class DifficultySelectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_difficulty);
 
-        songRepository = new SongRepository();
+        songRepository = new SongRepository(getApplicationContext());
 
         // setup toolbar back button, to go back to the home screen
         MaterialToolbar toolbar = findViewById(R.id.toolbar);

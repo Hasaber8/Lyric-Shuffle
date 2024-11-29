@@ -5,8 +5,8 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -182,7 +182,7 @@ public class GameActivity extends AppCompatActivity implements
         // Run lyrics fetching on a background thread
         Log.d("GameActivity", "Fetching lyrics for songId: " + songId);
         new Thread(() -> {
-            LyricRepository lyricRepository = new LyricRepository();
+            LyricRepository lyricRepository = new LyricRepository(getApplicationContext());
             List<LyricLine> lyrics = lyricRepository.getLyricsBySongId(songId);
             Log.d("GameActivity", "Fetched lyrics: " + lyrics + " for songId: " + songId);
             // Update UI on the main thread after fetching the lyrics
@@ -339,7 +339,7 @@ public class GameActivity extends AppCompatActivity implements
             UUID songId = UUID.fromString(getIntent().getStringExtra("songId")); // Get songId passed to this activity
 
             // Save the score to the database
-            PlaySessionRepository playSessionRepository = new PlaySessionRepository();
+            PlaySessionRepository playSessionRepository = new PlaySessionRepository(getApplicationContext());
             boolean scoreSaved = playSessionRepository.saveScore(songId, userId, finalTotalPoints);
 
             // Update the UI thread after saving the score

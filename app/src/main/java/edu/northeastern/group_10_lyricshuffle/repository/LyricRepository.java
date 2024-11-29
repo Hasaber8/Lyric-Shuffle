@@ -1,5 +1,6 @@
 package edu.northeastern.group_10_lyricshuffle.repository;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.sql.Connection;
@@ -17,8 +18,8 @@ public class LyricRepository {
     private static final String TAG = "LyricRepository";
     private final DatabaseManager dbManager;
 
-    public LyricRepository() {
-        this.dbManager = DatabaseManager.getInstance();
+    public LyricRepository(Context context) {
+        this.dbManager = DatabaseManager.getInstance(context);
     }
 
     public List<LyricLine> getLyricsBySongId(UUID songId) {
@@ -40,7 +41,7 @@ public class LyricRepository {
                         rs.getInt("lyric_order_id")      // Order ID for correct position
                 ));
             }
-        Log.d(TAG, "Lyrics fetched successfully" + lyrics.size());
+            Log.d(TAG, "Lyrics fetched successfully" + lyrics.size());
         } catch (SQLException e) {
             Log.e(TAG, "Error fetching lyrics", e);
         }

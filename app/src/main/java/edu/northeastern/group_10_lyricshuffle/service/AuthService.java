@@ -1,5 +1,7 @@
 package edu.northeastern.group_10_lyricshuffle.service;
 
+import android.content.Context;
+
 import edu.northeastern.group_10_lyricshuffle.model.User;
 import edu.northeastern.group_10_lyricshuffle.repository.UserRepository;
 import edu.northeastern.group_10_lyricshuffle.util.Result;
@@ -9,8 +11,8 @@ public class AuthService {
     private static final String TAG = "AuthService";
     private final UserRepository userRepository;
 
-    public AuthService() {
-        this.userRepository = new UserRepository();
+    public AuthService(Context context) {
+        this.userRepository = new UserRepository(context);
     }
 
     public Result<User> signUp(String username, String email, String password) {

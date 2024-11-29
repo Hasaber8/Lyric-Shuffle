@@ -1,5 +1,6 @@
 package edu.northeastern.group_10_lyricshuffle.repository;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.sql.Connection;
@@ -16,8 +17,8 @@ public class LeaderboardRepository {
     private static final String TAG = "LeaderboardRepository";
     private final DatabaseManager dbManager;
 
-    public LeaderboardRepository() {
-        this.dbManager = DatabaseManager.getInstance();
+    public LeaderboardRepository(Context context) {
+        this.dbManager = DatabaseManager.getInstance(context);
     }
 
     // Method to fetch the top 20 users based on their average score over the last 10 plays

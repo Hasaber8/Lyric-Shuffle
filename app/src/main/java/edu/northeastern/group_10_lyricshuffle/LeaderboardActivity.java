@@ -99,7 +99,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         new Thread(() -> {
             try {
                 // Fetch data using repository
-                LeaderboardRepository leaderboardRepository = new LeaderboardRepository();
+                LeaderboardRepository leaderboardRepository = new LeaderboardRepository(getApplicationContext());
                 List<LeaderboardEntry> leaderboardData = leaderboardRepository.getTop20Leaderboard();
 
                 // Update UI on main thread

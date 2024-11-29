@@ -35,7 +35,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         // Initialize services
-        authService = new AuthService();
+        authService = new AuthService(getApplicationContext());
 
         // Initialize views
         firstNameField = findViewById(R.id.firstNameField);
