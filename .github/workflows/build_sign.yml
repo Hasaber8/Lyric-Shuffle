@@ -1,0 +1,94 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+      - 'v*'  # Push events to matching v*, i.e. v1.0, v20.15.10
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build with Gradle
+      run: ./gradlew assembleRelease
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v2
+
+    - name: Sign APK
+      env:
+        KEYSTORE: ${{ secrets.KEYSTORE }}
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: key0
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      run: |
+        # Decode the base64 encoded keystore and save it
+        echo $KEYSTORE | base64 -d > keystore.jks
+        
+        # Find the path of the unsigned APK
+        APK_PATH=$(find . -name "*-unsigned.apk" | head -n 1)
+        APK_DIR=$(dirname "$APK_PATH")
+        
+        # Find the latest version of apksigner
+        APKSIGNER=$(find $ANDROID_SDK_ROOT/build-tools -name "apksigner" | sort -r | head -n 1)
+        
+        # Define output filename
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          # For tags, use the tag name
+          VERSION=${GITHUB_REF#refs/tags/}
+        else
+          # For other builds, use commit SHA
+          VERSION=${GITHUB_SHA}
+        fi
+        
+        OUTPUT_FILE="$APK_DIR/MADFa_2024_Group10-${VERSION}.apk"
+        
+        # Sign the APK
+        $APKSIGNER sign \
+          --ks keystore.jks \
+          --ks-key-alias ${KEY_ALIAS} \
+          --ks-pass env:KEYSTORE_PASSWORD \
+          --key-pass env:KEY_PASSWORD \
+          --in ${APK_PATH} \
+          --out ${OUTPUT_FILE}
+        
+        # Verify the signed APK
+        $APKSIGNER verify --verbose ${OUTPUT_FILE}
+        
+        # List directory contents for debugging
+        ls -la "$APK_DIR"
+        
+        # Save the output path for the next step
+        echo "SIGNED_APK_PATH=${OUTPUT_FILE}" >> $GITHUB_ENV
+
+    - name: Upload signed APK as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: LyricShuffle-${{ github.sha }}
+        path: ${{ env.SIGNED_APK_PATH }}
+
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ${{ env.SIGNED_APK_PATH }}
+        generate_release_notes: true
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
