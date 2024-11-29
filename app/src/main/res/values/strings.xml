@@ -1,6 +1,6 @@
 <resources>
     <!-- App Info -->
-    <string name="app_name">Group_10_LyricShuffle</string>
+    <string name="app_name">LyricShuffle</string>
     <string name="app_description">Love music and word games? Combine the best of both worlds with LyricShuffle, the ultimate app that challenges your music knowledge and puzzle-solving skills!</string>
     <string name="app_version">Version 1.0</string>
     <string name="app_title">LyricShuffle</string>
