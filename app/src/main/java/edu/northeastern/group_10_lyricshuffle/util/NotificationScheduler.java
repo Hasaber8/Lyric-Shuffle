@@ -40,37 +40,56 @@ public class NotificationScheduler {
      * Schedule all notifications for the day
      */
     public void scheduleAllNotifications() {
-        Log.d(TAG, "Scheduling all notifications");
-        cancelAllNotifications();
+        Log.d(TAG, "Checking and scheduling notifications if needed");
 
         Calendar now = Calendar.getInstance();
         int currentHour = now.get(Calendar.HOUR_OF_DAY);
 
-        // Schedule morning notification if it's before morning window
-        if (currentHour < MORNING_END) {
+        // For each time window, we only schedule if:
+        // 1. It's before that window's end time
+        // 2. We don't already have a notification scheduled for that window
+
+        if (currentHour < MORNING_END && !isNotificationScheduled(MORNING_REQUEST_CODE)) {
             scheduleNotificationForWindow(MORNING_START, MORNING_END, MORNING_REQUEST_CODE);
             Log.d(TAG, "Scheduled morning notification");
         }
 
-        // Schedule afternoon notification if it's before afternoon window
-        if (currentHour < AFTERNOON_END) {
+        if (currentHour < AFTERNOON_END && !isNotificationScheduled(AFTERNOON_REQUEST_CODE)) {
             scheduleNotificationForWindow(AFTERNOON_START, AFTERNOON_END, AFTERNOON_REQUEST_CODE);
             Log.d(TAG, "Scheduled afternoon notification");
         }
 
-        // Schedule evening notification if it's before evening window
-        if (currentHour < EVENING_END) {
+        if (currentHour < EVENING_END && !isNotificationScheduled(EVENING_REQUEST_CODE)) {
             scheduleNotificationForWindow(EVENING_START, EVENING_END, EVENING_REQUEST_CODE);
             Log.d(TAG, "Scheduled evening notification");
         }
 
-        // If past all windows, schedule for next day
-        if (currentHour >= EVENING_END) {
+        // Schedule next day's notifications only if we're past all windows AND don't have tomorrow's scheduled
+        if (currentHour >= EVENING_END && !areTomorrowNotificationsScheduled()) {
             scheduleNextDayNotifications();
             Log.d(TAG, "Scheduled notifications for next day");
         }
     }
 
+    /**
+     * Check if a notification is already scheduled
+     */
+    private boolean isNotificationScheduled(int requestCode) {
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        return PendingIntent.getBroadcast(
+                context,
+                requestCode,
+                intent,
+                PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE
+        ) != null;
+    }
+
+    private boolean areTomorrowNotificationsScheduled() {
+        // Check if any of tomorrow's notifications are scheduled
+        return isNotificationScheduled(MORNING_REQUEST_CODE) ||
+                isNotificationScheduled(AFTERNOON_REQUEST_CODE) ||
+                isNotificationScheduled(EVENING_REQUEST_CODE);
+    }
     private void scheduleNextDayNotifications() {
         Calendar tomorrow = Calendar.getInstance();
         tomorrow.add(Calendar.DAY_OF_YEAR, 1);
