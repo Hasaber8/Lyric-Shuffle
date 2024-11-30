@@ -94,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Jane Smith"
+                android:text="Loading..."
                 android:textColor="@color/gray_900"
                 android:textSize="14sp"/>
 
@@ -102,7 +102,7 @@
                 android:id="@+id/secondPlaceScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2,850 pts"
+                android:text="Loading..."
                 android:textColor="@color/gray_600"
                 android:textSize="12sp"/>
 
@@ -146,7 +146,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="John Doe"
+                android:text="Loading..."
                 android:textColor="@color/gray_900"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
@@ -155,7 +155,7 @@
                 android:id="@+id/firstPlaceScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3,240 pts"
+                android:text="Loading..."
                 android:textColor="@color/gray_600"
                 android:textSize="14sp"/>
 
@@ -199,7 +199,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Mike Johnson"
+                android:text="Loading..."
                 android:textColor="@color/gray_900"
                 android:textSize="14sp"/>
 
@@ -207,7 +207,7 @@
                 android:id="@+id/thirdPlaceScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2,620 pts"
+                android:text="Loading..."
                 android:textColor="@color/gray_600"
                 android:textSize="12sp"/>
 

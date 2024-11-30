@@ -36,7 +36,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="32dp"
                 android:layout_toEndOf="@id/backButton"
-                android:text="Level 3"
+                android:text="Loading..."
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:fontFamily="sans-serif-medium"/>
@@ -111,16 +111,15 @@
                     android:id="@+id/artistNameTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Taylor Swift"
+                    android:text="Loading..."
                     android:textColor="@color/gray_600"
-                    android:textSize="14sp"
-                    />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/songNameTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="You Belong With Me"
+                    android:text="Loading..."
                     android:textColor="@color/gray_900"
                     android:textSize="16sp"
                     android:fontFamily="sans-serif-medium"/>
