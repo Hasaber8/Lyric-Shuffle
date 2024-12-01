@@ -1,9 +1,16 @@
 package edu.northeastern.group_10_lyricshuffle;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -14,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,7 +39,8 @@ import edu.northeastern.group_10_lyricshuffle.util.UserSession;
 
 public class GameActivity extends AppCompatActivity implements
         ArrangedLyricsAdapter.OnLyricClickListener,
-        AvailableLyricsAdapter.OnLyricClickListener {
+        AvailableLyricsAdapter.OnLyricClickListener,
+        SensorEventListener {
 
     private RecyclerView arrangedLyricsRecyclerView;
     private RecyclerView availableLyricsRecyclerView;
@@ -53,6 +62,17 @@ public class GameActivity extends AppCompatActivity implements
     private UUID songId;
     private int difficultyMultiplier;
     private MediaPlayer tickSoundPlayer;
+
+    // Shake detection
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+    private static final float SHAKE_THRESHOLD = 8.0f;
+    private static final int MIN_TIME_BETWEEN_SHAKES = 800; // in ms
+    private long lastShakeTime;
+    private float lastX = 0;
+    private float lastY = 0;
+    private float lastZ = 0;
+    private boolean isFirstSensorReading = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +108,17 @@ public class GameActivity extends AppCompatActivity implements
         initializeOriginalLyrics(songId);
         loadLyrics();
         setupButtons();
+
+        // Shake detection
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        if (sensorManager != null) {
+            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        }
+
+        // Show the shake instruction Snackbar
+        Snackbar.make(findViewById(android.R.id.content),
+                "Shake to reset the lyrics!",
+                Snackbar.LENGTH_SHORT).show();
     }
 
     private void initializeViews() {
@@ -361,12 +392,19 @@ public class GameActivity extends AppCompatActivity implements
         if (timer != null) {
             timer.cancel();
         }
+        if (sensorManager != null) {
+            sensorManager.unregisterListener(this);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setupTimer();
+        if (sensorManager != null && accelerometer != null) {
+            sensorManager.registerListener(this, accelerometer,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        }
     }
 
     @Override
@@ -376,5 +414,57 @@ public class GameActivity extends AppCompatActivity implements
             timer.cancel();
             timer = null;
         }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER) return;
+
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
+
+        // Initialize the last values with first reading
+        if (isFirstSensorReading) {
+            lastX = x;
+            lastY = y;
+            lastZ = z;
+            isFirstSensorReading = false;
+            return;
+        }
+
+        // Calculate acceleration
+        float acceleration = Math.abs(x + y + z - lastX - lastY - lastZ);
+
+        lastX = x;
+        lastY = y;
+        lastZ = z;
+
+        if (acceleration > SHAKE_THRESHOLD) {
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastShakeTime > MIN_TIME_BETWEEN_SHAKES) {
+                lastShakeTime = currentTime;
+                handleShake();
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // Not needed
+    }
+
+    private void handleShake() {
+        // Play a vibration feedback
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator != null && vibrator.hasVibrator()) {
+            // Vibrate for 200 milliseconds
+            vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
+        }
+
+        Toast.makeText(this, "Lyrics reset!", Toast.LENGTH_SHORT).show();
+
+        // Reset the lyrics
+        resetLyrics();
     }
 }
