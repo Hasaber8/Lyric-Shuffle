@@ -2,16 +2,34 @@ package edu.northeastern.group_10_lyricshuffle;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 
+import java.util.ArrayList;
+import java.util.UUID;
+
+import edu.northeastern.group_10_lyricshuffle.adapter.RecentPlaysAdapter;
+import edu.northeastern.group_10_lyricshuffle.model.RecentPlay;
+import edu.northeastern.group_10_lyricshuffle.repository.PlaySessionRepository;
+import edu.northeastern.group_10_lyricshuffle.util.UserSession;
+
 public class HomeActivity extends AppCompatActivity {
 
     public static final String EXTRA_SHOW_BOTTOM_NAV = "show_bottom_nav";
+
+    private RecentPlaysAdapter recentPlaysAdapter;
+    private PlaySessionRepository playSessionRepository;
+
+    private static final String KEY_RECENT_PLAYS = "recent_plays";
+    private ArrayList<RecentPlay> recentPlays = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +42,20 @@ public class HomeActivity extends AppCompatActivity {
         setupAboutCard();
         setupUserButton();
         setupHowToPlayCard();
+
+        playSessionRepository = new PlaySessionRepository(this);
+        setupRecentPlays();
+
+        // Only fetch if there's no saved state
+        if (savedInstanceState == null) {
+            fetchRecentPlays();
+        } else {
+            recentPlays = savedInstanceState.getParcelableArrayList(KEY_RECENT_PLAYS);
+            if (recentPlays != null && !recentPlays.isEmpty()) {
+                findViewById(R.id.recentPlaysSection).setVisibility(View.VISIBLE);
+                recentPlaysAdapter.updateData(recentPlays);
+            }
+        }
     }
 
     private void setupBottomNavigation() {
@@ -89,4 +121,31 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    private void setupRecentPlays() {
+        RecyclerView recentPlaysRecyclerView = findViewById(R.id.recentPlaysRecyclerView);
+        recentPlaysRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recentPlaysAdapter = new RecentPlaysAdapter(new ArrayList<>());
+        recentPlaysRecyclerView.setAdapter(recentPlaysAdapter);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(KEY_RECENT_PLAYS, recentPlays);
+    }
+
+    private void fetchRecentPlays() {
+        // Fetch recent plays in background
+        new Thread(() -> {
+            UUID currentUserId = UserSession.getInstance(this).getUserId();
+            recentPlays = new ArrayList<>(playSessionRepository.getRecentPlays(currentUserId, 5));
+
+            runOnUiThread(() -> {
+                if (!recentPlays.isEmpty()) {
+                    findViewById(R.id.recentPlaysSection).setVisibility(View.VISIBLE);
+                    recentPlaysAdapter.updateData(recentPlays);
+                }
+            });
+        }).start();
+    }
 }

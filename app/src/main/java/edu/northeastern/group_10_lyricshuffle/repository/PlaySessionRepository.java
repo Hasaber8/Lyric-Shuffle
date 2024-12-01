@@ -5,10 +5,14 @@ import android.util.Log;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import edu.northeastern.group_10_lyricshuffle.db.DatabaseManager;
+import edu.northeastern.group_10_lyricshuffle.model.RecentPlay;
 
 public class PlaySessionRepository {
 
@@ -44,5 +48,35 @@ public class PlaySessionRepository {
         }
 
         return isSuccess;
+    }
+
+    public List<RecentPlay> getRecentPlays(UUID userId, int limit) {
+        List<RecentPlay> recentPlays = new ArrayList<>();
+        String query = "SELECT s.title, s.artist, ps.score, ps.date_played "
+                + "FROM play_session ps "
+                + "JOIN songs s ON ps.song_id = s.song_id "
+                + "WHERE ps.user_id = ? "
+                + "ORDER BY ps.date_played DESC "
+                + "LIMIT ? ";
+
+        try (Connection conn = dbManager.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setObject(1, userId);
+            stmt.setInt(2, limit);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                recentPlays.add(new RecentPlay(
+                        rs.getString("title"),
+                        rs.getString("artist"),
+                        rs.getDouble("score"),
+                        rs.getTimestamp("date_played").toInstant()
+                ));
+            }
+        } catch (SQLException e) {
+            Log.e(TAG, "Error fetching recent plays", e);
+        }
+
+        return recentPlays;
     }
 }
